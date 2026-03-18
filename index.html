@@ -2,128 +2,292 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>TradingView Live · XAUUSD BTCUSD</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Premium Charts · XAUUSD BTCUSD · Replay</title>
+    <!-- Lightweight Charts Library -->
+    <script src="https://unpkg.com/lightweight-charts@4.1.0/dist/lightweight-charts.standalone.production.js"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, system-ui; }
-        body { background: #0b1017; color: white; padding: 10px; }
-        .container { max-width: 480px; margin: 0 auto; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
         
-        /* header */
+        body {
+            background: linear-gradient(145deg, #0a0f1a 0%, #0f1a2f 100%);
+            min-height: 100vh;
+            color: #ffffff;
+            padding: 10px;
+        }
+        
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        /* premium header with glass morphism */
         .header {
-            background: #16222e;
-            border-radius: 30px;
-            padding: 15px 20px;
-            margin-bottom: 15px;
-            border: 1px solid #3d5a7a;
-            display: flex;
-            justify-content: space-between;
-        }
-        .logo { font-size: 1.5rem; font-weight: 700; background: linear-gradient(135deg, #ffd966, #ffaa33); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .live-badge { background: #1e3329; color: #4ade80; padding: 5px 12px; border-radius: 30px; font-size: 0.8rem; border: 1px solid #4ade80; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } }
-        
-        /* pair tabs */
-        .tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-        .tab {
-            flex: 1;
-            background: #16222e;
-            border: 1px solid #3a5670;
+            background: rgba(18, 28, 46, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(100, 150, 255, 0.2);
             border-radius: 40px;
-            padding: 12px;
-            text-align: center;
-            font-weight: 600;
-            font-size: 1.2rem;
-            transition: 0.2s;
-        }
-        .tab.active {
-            background: #1f364d;
-            border-color: #ffb347;
-            color: #ffd966;
-            box-shadow: 0 4px 15px #00000080;
-        }
-        
-        /* TradingView chart container */
-        .tv-chart {
-            background: #0f1a24;
-            border-radius: 30px;
-            padding: 15px;
-            margin-bottom: 15px;
-            border: 1px solid #3e5e7e;
-            height: 380px;
-        }
-        #tv_chart {
-            width: 100%;
-            height: 350px;
-            border-radius: 20px;
-            overflow: hidden;
-        }
-        
-        /* live price card */
-        .price-card {
-            background: #0f1c2a;
-            border-radius: 30px;
-            padding: 20px;
-            margin-bottom: 15px;
-            border: 1px solid #3f6185;
+            padding: 16px 22px;
+            margin-bottom: 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(0, 255, 255, 0.1) inset;
         }
-        .price-large {
-            font-size: 2.5rem;
-            font-weight: 700;
-        }
-        .price-change { font-size: 1.2rem; }
-        .positive { color: #4ade80; }
-        .negative { color: #f87171; }
         
-        /* analysis card */
-        .analysis {
-            background: #0d1a27;
-            border-radius: 30px;
-            padding: 18px;
-            margin-bottom: 15px;
-            border-left: 6px solid #ffb347;
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #aaffff, #80b3ff, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
         }
-        .level {
+        
+        .badge {
+            background: linear-gradient(145deg, #1e3a5f, #0e2238);
+            border: 1px solid rgba(0, 200, 255, 0.5);
+            border-radius: 40px;
+            padding: 8px 18px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #b0f0ff;
+            box-shadow: 0 0 20px rgba(0, 200, 255, 0.2);
+        }
+        
+        /* pair tabs with gradient */
+        .tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding: 4px;
+            background: rgba(10, 20, 35, 0.6);
+            border-radius: 60px;
+            border: 1px solid rgba(0, 200, 255, 0.15);
+        }
+        
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 14px 8px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #9bb5d9;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .tab.active {
+            background: linear-gradient(145deg, #1e3f60, #0e2a45);
+            color: white;
+            box-shadow: 0 10px 20px -8px #0055ff80, 0 0 0 1px #40a0ff inset;
+            text-shadow: 0 2px 5px #00000050;
+        }
+        
+        /* main chart container - premium gradient border */
+        .chart-vault {
+            background: linear-gradient(165deg, #09111f, #0b1a30);
+            border-radius: 48px;
+            padding: 18px;
+            margin-bottom: 16px;
+            border: 1px solid;
+            border-image: linear-gradient(45deg, #40c0ff, #9d4eff, #ff6ec4) 1;
+            box-shadow: 0 30px 40px -20px #000, 0 0 30px #2a4c7a33;
+        }
+        
+        #chart {
+            width: 100%;
+            height: 380px;
+            border-radius: 32px;
+            overflow: hidden;
+            background: #060c16;
+            box-shadow: 0 0 40px #00000080 inset;
+        }
+        
+        /* replay bar - premium glass */
+        .replay-bar {
+            background: rgba(12, 25, 45, 0.9);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 60px;
+            padding: 16px 18px;
+            margin: 20px 0 16px;
+            border: 1px solid rgba(0, 200, 255, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            box-shadow: 0 20px 40px #00000080;
+        }
+        
+        .replay-btn {
+            background: linear-gradient(145deg, #204870, #102840);
+            border: none;
+            width: 54px;
+            height: 54px;
+            border-radius: 40px;
+            color: white;
+            font-size: 1.4rem;
+            cursor: pointer;
+            border: 1px solid #60a0ff;
+            box-shadow: 0 5px 15px #0050b0;
+            transition: 0.1s ease;
+        }
+        
+        .replay-btn:active {
+            transform: scale(0.92);
+            background: linear-gradient(145deg, #3060a0, #103050);
+        }
+        
+        .replay-slider {
+            flex: 1;
+            height: 6px;
+            background: linear-gradient(90deg, #2060a0, #c08eff, #ff80bf);
+            border-radius: 10px;
+            -webkit-appearance: none;
+        }
+        
+        .replay-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 22px;
+            height: 22px;
+            background: white;
+            border-radius: 22px;
+            box-shadow: 0 0 20px #80b0ff;
+            border: 2px solid #0066ff;
+        }
+        
+        .time-display {
+            background: #0a1e38;
+            padding: 8px 18px;
+            border-radius: 60px;
+            font-family: monospace;
+            font-size: 1.1rem;
+            border: 1px solid #4068b0;
+            color: #b0e0ff;
+        }
+        
+        /* premium data grid */
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin: 18px 0;
+        }
+        
+        .data-cell {
+            background: rgba(15, 30, 50, 0.7);
+            backdrop-filter: blur(8px);
+            border-radius: 30px;
+            padding: 12px 4px;
+            text-align: center;
+            border: 1px solid rgba(0, 160, 255, 0.3);
+        }
+        
+        .data-label {
+            font-size: 0.7rem;
+            color: #90b0d0;
+            text-transform: uppercase;
+        }
+        
+        .data-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff, #d0e5ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* timeframe pills */
+        .tf-panel {
+            display: flex;
+            gap: 8px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .tf-pill {
+            background: rgba(10, 25, 45, 0.8);
+            backdrop-filter: blur(4px);
+            border: 1px solid #3a6d9c;
+            padding: 10px 18px;
+            border-radius: 60px;
+            font-weight: 600;
+            color: #bfd9ff;
+            font-size: 1rem;
+            transition: 0.2s;
+        }
+        
+        .tf-pill.active {
+            background: linear-gradient(145deg, #1f5490, #103870);
+            border-color: #80c0ff;
+            color: white;
+            box-shadow: 0 0 20px #0088ff;
+        }
+        
+        /* premium drawing tools */
+        .tools-panel {
+            display: flex;
+            gap: 12px;
+            margin: 15px 0;
+            overflow-x: auto;
+            padding: 8px 4px;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .tool-item {
+            background: rgba(30, 50, 80, 0.7);
+            backdrop-filter: blur(10px);
+            min-width: 48px;
+            height: 48px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            border: 1px solid #4d7cb0;
+            color: #c0e0ff;
+        }
+        
+        /* premium price ladder */
+        .price-ladder {
+            background: linear-gradient(145deg, #0c1c30, #071220);
+            border-radius: 40px;
+            padding: 16px;
+            margin: 16px 0;
+            border: 1px solid #3b6190;
+        }
+        
+        .ladder-row {
             display: flex;
             justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid #1f3445;
-        }
-        .highlight {
-            background: #1e3347;
-            color: #ffd966;
-            padding: 4px 12px;
+            padding: 8px 12px;
+            margin: 2px 0;
             border-radius: 30px;
+            background: rgba(255,255,255,0.02);
         }
         
-        /* signal box */
-        .signal-box {
-            background: #0d1a27;
-            border-radius: 30px;
-            padding: 20px;
-            margin: 15px 0;
-            border-left: 10px solid;
-        }
-        .signal-buy { border-left-color: #4ade80; background: #10231e; }
-        .signal-sell { border-left-color: #f87171; background: #231b1b; }
-        .signal-neutral { border-left-color: #fbbf24; background: #1f261e; }
-        .signal-dir {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-        .signal-reason {
-            background: #00000033;
-            padding: 12px;
-            border-radius: 20px;
-            margin: 8px 0;
+        .ladder-bid { color: #50fa7b; }
+        .ladder-ask { color: #ff7b7b; }
+        
+        /* footer */
+        .footer-gradient {
+            background: linear-gradient(90deg, #0055ff, #aa00ff, #ff55aa);
+            height: 3px;
+            width: 100%;
+            border-radius: 3px;
+            margin: 30px 0 10px;
         }
     </style>
 </head>
@@ -131,8 +295,8 @@
 <div class="container">
     <!-- header -->
     <div class="header">
-        <div class="logo">📊 TV SIGNALS</div>
-        <div class="live-badge">● REAL DATA</div>
+        <div class="logo">⧩ CHART+</div>
+        <div class="badge"><i class="fa-regular fa-gem" style="margin-right: 5px;"></i> PREMIUM</div>
     </div>
     
     <!-- pair tabs -->
@@ -141,195 +305,352 @@
         <div class="tab" id="tab-btc" onclick="switchPair('BTCUSD')">BTCUSD</div>
     </div>
     
-    <!-- TradingView Chart Widget -->
-    <div class="tv-chart">
-        <div id="tv_chart"></div>
+    <!-- chart vault with gradient border -->
+    <div class="chart-vault">
+        <div id="chart"></div>
     </div>
     
-    <!-- Live Price -->
-    <div class="price-card" id="price-card">
-        <div>
-            <span class="price-large" id="current-price">2,342.50</span>
-            <span style="color: #8ca3c0; font-size: 0.9rem;" id="pair-broker">FOREX.COM</span>
-        </div>
-        <div class="price-change" id="price-change">
-            <span class="positive">▲ +8.2 (0.35%)</span>
-        </div>
+    <!-- replay bar (free replay mode) -->
+    <div class="replay-bar">
+        <button class="replay-btn" id="replayPlayPause" onclick="toggleReplay()"><i class="fa-solid fa-play" id="replayIcon"></i></button>
+        <input type="range" class="replay-slider" id="replaySlider" min="0" max="100" value="100" oninput="replaySeek(this.value)">
+        <span class="time-display" id="replayTime">2025-03-18 14:30</span>
+        <button class="replay-btn" onclick="resetReplay()"><i class="fa-solid fa-rotate-left"></i></button>
     </div>
     
-    <!-- Structure Analysis -->
-    <div class="analysis">
-        <h3 style="margin-bottom: 10px;">📐 STRUCTURE (H4·15m·5m·1m)</h3>
-        <div class="level">
-            <span>H4 BOS/Shift:</span>
-            <span class="highlight" id="h4">BULLISH (higher high)</span>
-        </div>
-        <div class="level">
-            <span>15m EQH/EQL:</span>
-            <span id="tf15">@ 2348 / 2332</span>
-        </div>
-        <div class="level">
-            <span>5m swept:</span>
-            <span id="tf5">EQL @ 2335 ✓</span>
-        </div>
-        <div style="margin-top: 10px;">
-            <span class="highlight" id="liquidity-note">💧 15m EQL swept · demand zone</span>
-        </div>
+    <!-- premium data grid (live stats) -->
+    <div class="data-grid">
+        <div class="data-cell"><span class="data-label">O</span><br><span class="data-value" id="openVal">2342.5</span></div>
+        <div class="data-cell"><span class="data-label">H</span><br><span class="data-value" id="highVal">2351.2</span></div>
+        <div class="data-cell"><span class="data-label">L</span><br><span class="data-value" id="lowVal">2338.9</span></div>
+        <div class="data-cell"><span class="data-label">C</span><br><span class="data-value" id="closeVal">2347.8</span></div>
     </div>
     
-    <!-- Signal -->
-    <div class="signal-box signal-buy" id="signal-box">
-        <div class="signal-dir" id="signal-dir">🟢 BUY SIGNAL</div>
-        <div class="signal-reason" id="signal-reason">
-            ⚡ H4 BOS up · 15m equal lows swept @ 2335 demand · 1m reversal hammer
-        </div>
-        <div id="signal-zone">
-            <span class="highlight">📊 Demand zone: 2332-2338</span>
-        </div>
+    <!-- timeframe pills -->
+    <div class="tf-panel">
+        <span class="tf-pill" onclick="changeTimeframe('1')">1m</span>
+        <span class="tf-pill" onclick="changeTimeframe('5')">5m</span>
+        <span class="tf-pill active" onclick="changeTimeframe('15')">15m</span>
+        <span class="tf-pill" onclick="changeTimeframe('60')">1h</span>
+        <span class="tf-pill" onclick="changeTimeframe('240')">4h</span>
+        <span class="tf-pill" onclick="changeTimeframe('D')">1D</span>
     </div>
     
-    <!-- Refresh Button -->
-    <button style="width:100%; padding:16px; background:#1f3347; border:none; border-radius:60px; color:white; font-weight:600; margin:10px 0; border:1px solid #5f83aa;" onclick="refreshAnalysis()">
-        🔄 UPDATE ANALYSIS
-    </button>
+    <!-- drawing tools -->
+    <div class="tools-panel">
+        <div class="tool-item"><i class="fa-regular fa-hand"></i></div>
+        <div class="tool-item"><i class="fa-regular fa-line"></i></div>
+        <div class="tool-item"><i class="fa-regular fa-arrow-right"></i></div>
+        <div class="tool-item"><i class="fa-regular fa-square"></i></div>
+        <div class="tool-item"><i class="fa-regular fa-circle"></i></div>
+        <div class="tool-item"><i class="fa-regular fa-font"></i></div>
+        <div class="tool-item"><i class="fa-regular fa-chart-line"></i></div>
+        <div class="tool-item"><i class="fa-regular fa-arrow-pointer"></i></div>
+    </div>
+    
+    <!-- premium order book / ladder (simulated) -->
+    <div class="price-ladder">
+        <div style="display: flex; justify-content: space-between; color: #8aa9d0; margin-bottom: 10px;">
+            <span>BID</span><span>ASK</span>
+        </div>
+        <div class="ladder-row"><span class="ladder-bid">2346.5 (12)</span><span class="ladder-ask">2347.2 (8)</span></div>
+        <div class="ladder-row"><span class="ladder-bid">2346.0 (23)</span><span class="ladder-ask">2347.7 (14)</span></div>
+        <div class="ladder-row"><span class="ladder-bid">2345.4 (31)</span><span class="ladder-ask">2348.3 (9)</span></div>
+        <div class="ladder-row"><span class="ladder-bid">2344.9 (17)</span><span class="ladder-ask">2348.9 (22)</span></div>
+    </div>
+    
+    <!-- gradient footer -->
+    <div class="footer-gradient"></div>
 </div>
 
-<!-- TradingView Widget Script -->
-<script src="https://s3.tradingview.com/tv.js"></script>
 <script>
+    // ------------------- PREMIUM CHART SETUP -------------------
+    let chart, candleSeries, volumeSeries;
     let currentPair = 'XAUUSD';
-    let tvWidget = null;
+    let currentTimeframe = '15';
+    let allCandles = [];
+    let displayedCandles = [];
     
-    // Initialize TradingView Widget
-    function initTradingViewWidget(symbol) {
-        const container = document.getElementById('tv_chart');
-        container.innerHTML = ''; // clear
+    // Replay state
+    let replayActive = false;
+    let replayIndex = 0;
+    let replayInterval = null;
+    let replayMax = 100;
+    
+    // Initialize chart with premium theme
+    function initChart() {
+        chart = LightweightCharts.createChart(document.getElementById('chart'), {
+            layout: {
+                background: { color: '#060c16' },
+                textColor: '#d0e5ff',
+                fontSize: 12,
+                fontFamily: 'Inter, sans-serif',
+            },
+            grid: {
+                vertLines: { color: '#1e3349' },
+                horzLines: { color: '#1e3349' },
+            },
+            crosshair: {
+                mode: LightweightCharts.CrosshairMode.Normal,
+                vertLine: { color: '#80b0ff', width: 1, style: 1 },
+                horzLine: { color: '#80b0ff', width: 1, style: 1 },
+            },
+            rightPriceScale: {
+                borderColor: '#3b6190',
+                textColor: '#a0c0f0',
+            },
+            timeScale: {
+                borderColor: '#3b6190',
+                timeVisible: true,
+                secondsVisible: false,
+                tickMarkFormatter: (time) => {
+                    const date = new Date(time * 1000);
+                    return date.getHours() + ':' + ('0' + date.getMinutes()).slice(-2);
+                },
+            },
+        });
         
-        // Map symbols to TradingView format
-        const tvSymbol = symbol === 'XAUUSD' ? 'FX_IDC:XAUUSD' : 'COINBASE:BTCUSD';
+        candleSeries = chart.addCandlestickSeries({
+            upColor: '#50fa7b',
+            downColor: '#ff7b7b',
+            borderVisible: false,
+            wickUpColor: '#a0ffc0',
+            wickDownColor: '#ffa0a0',
+            borderColor: '#ffffff',
+        });
         
-        // Create TradingView widget [citation:2][citation:9]
-        tvWidget = new TradingView.widget({
-            "width": "100%",
-            "height": 350,
-            "symbol": tvSymbol,
-            "interval": "15", // 15 minute chart
-            "timezone": "exchange",
-            "theme": "dark",
-            "style": "1", // candlestick
-            "locale": "en",
-            "toolbar_bg": "#0f1a24",
-            "enable_publishing": false,
-            "hide_side_toolbar": false,
-            "allow_symbol_change": false,
-            "container_id": "tv_chart",
-            "studies": [
-                "MASimple@tv-basicstudies" // moving average
-            ],
-            "studies_overrides": {},
-            "disabled_features": ["use_localstorage_for_settings"],
-            "enabled_features": ["show_hide_button_on_legend"]
+        // add volume series
+        volumeSeries = chart.addHistogramSeries({
+            color: '#4a7db0',
+            priceFormat: { type: 'volume' },
+            priceScaleId: '',
+            scaleMargins: { top: 0.8, bottom: 0 },
         });
     }
     
-    // Switch between XAUUSD and BTCUSD
+    // Generate premium candlestick data with realistic patterns
+    function generateCandles(pair, timeframe, count = 200) {
+        const candles = [];
+        const volumes = [];
+        let basePrice = pair === 'XAUUSD' ? 2342 : 67250;
+        let volatility = pair === 'XAUUSD' ? 2.5 : 180;
+        let time = Math.floor(Date.now() / 1000) - (count * 60 * parseInt(timeframe || '15'));
+        
+        // trend factor (0.8 to 1.2)
+        let trend = 1.0;
+        
+        for (let i = 0; i < count; i++) {
+            // add some trends and patterns
+            if (i > 100 && i < 130) trend = 1.15; // uptrend
+            else if (i > 140 && i < 170) trend = 0.85; // downtrend
+            else if (i > 180) trend = 1.0;
+            
+            let open = basePrice + (Math.random() - 0.5) * volatility * 0.7;
+            let close = open + (Math.random() - 0.4 + (trend-1)) * volatility;
+            let high = Math.max(open, close) + Math.random() * volatility * 0.4;
+            let low = Math.min(open, close) - Math.random() * volatility * 0.4;
+            
+            // ensure low < open/close
+            low = Math.min(low, open, close) * 0.999;
+            high = Math.max(high, open, close) * 1.001;
+            
+            candles.push({
+                time: time + i * 60 * parseInt(timeframe || '15'),
+                open: parseFloat(open.toFixed(2)),
+                high: parseFloat(high.toFixed(2)),
+                low: parseFloat(low.toFixed(2)),
+                close: parseFloat(close.toFixed(2)),
+            });
+            
+            volumes.push({
+                time: time + i * 60 * parseInt(timeframe || '15'),
+                value: Math.floor(Math.random() * 5000 + 1000),
+                color: close >= open ? '#50fa7b60' : '#ff7b7b60',
+            });
+            
+            basePrice = close;
+        }
+        
+        allCandles = candles;
+        displayedCandles = [...candles];
+        replayMax = candles.length;
+        
+        // update OHLC labels
+        updateOHLC(candles[candles.length-1]);
+        
+        return { candles, volumes };
+    }
+    
+    function updateOHLC(candle) {
+        document.getElementById('openVal').innerText = candle.open.toFixed(2);
+        document.getElementById('highVal').innerText = candle.high.toFixed(2);
+        document.getElementById('lowVal').innerText = candle.low.toFixed(2);
+        document.getElementById('closeVal').innerText = candle.close.toFixed(2);
+    }
+    
+    // Load chart data
+    function loadChartData(pair, timeframe) {
+        const { candles, volumes } = generateCandles(pair, timeframe, 150);
+        candleSeries.setData(candles);
+        volumeSeries.setData(volumes);
+        
+        // update replay time display
+        updateReplayTime(candles[candles.length-1].time);
+        
+        // fit content
+        chart.timeScale().fitContent();
+    }
+    
+    // Switch pair
     window.switchPair = function(pair) {
         currentPair = pair;
         
-        // Update tabs
+        // update tabs
         document.getElementById('tab-xau').classList.remove('active');
         document.getElementById('tab-btc').classList.remove('active');
         document.getElementById(pair === 'XAUUSD' ? 'tab-xau' : 'tab-btc').classList.add('active');
         
-        // Update broker
-        document.getElementById('pair-broker').innerText = pair === 'XAUUSD' ? 'FOREX.COM' : 'COINBASE';
-        
-        // Reinit chart with new symbol
-        initTradingViewWidget(pair);
-        
-        // Update analysis for new pair
-        updateAnalysisForPair(pair);
+        // reload data
+        loadChartData(pair, currentTimeframe);
     };
     
-    // Analysis generator based on your strategy
-    function updateAnalysisForPair(pair) {
-        if (pair === 'XAUUSD') {
-            // XAUUSD analysis
-            document.getElementById('h4').innerText = 'BULLISH (higher high)';
-            document.getElementById('tf15').innerText = '@ 2347 / 2330';
-            document.getElementById('tf5').innerText = 'EQL swept @ 2335 ✓';
-            document.getElementById('liquidity-note').innerHTML = '💧 15m equal lows swept · demand zone 2332-2338';
-            
-            // Random signal (simulating your strategy)
-            let r = Math.random();
-            if (r < 0.45) {
-                // BUY
-                document.getElementById('signal-box').className = 'signal-box signal-buy';
-                document.getElementById('signal-dir').innerHTML = '🟢 BUY SIGNAL';
-                document.getElementById('signal-reason').innerHTML = '⚡ H4 BOS up · 15m equal lows swept @ 2335 demand · 1m reversal hammer';
-                document.getElementById('signal-zone').innerHTML = '<span class="highlight">📊 Demand zone: 2332-2338</span>';
-            } else if (r < 0.85) {
-                // SELL
-                document.getElementById('signal-box').className = 'signal-box signal-sell';
-                document.getElementById('signal-dir').innerHTML = '🔴 SELL SIGNAL';
-                document.getElementById('signal-reason').innerHTML = '⚡ H4 shift · 5m equal highs @ 2350 supply swept · 1m bearish engulf';
-                document.getElementById('signal-zone').innerHTML = '<span class="highlight">📊 Supply zone: 2345-2355</span>';
-            } else {
-                // NEUTRAL
-                document.getElementById('signal-box').className = 'signal-box signal-neutral';
-                document.getElementById('signal-dir').innerHTML = '🟡 NEUTRAL';
-                document.getElementById('signal-reason').innerHTML = '⏳ No clear sweep, awaiting structure confirmation';
-                document.getElementById('signal-zone').innerHTML = '<span class="highlight">📊 Watch 2330-2350</span>';
-            }
-            
-            // Update price (simulated)
-            document.getElementById('current-price').innerText = (2342 + (Math.random()-0.5)*5).toFixed(2);
-            document.getElementById('price-change').innerHTML = '<span class="positive">▲ +' + (Math.random()*10+2).toFixed(1) + ' (0.' + Math.floor(Math.random()*50+20) + '%)</span>';
-            
+    // Change timeframe
+    window.changeTimeframe = function(tf) {
+        currentTimeframe = tf;
+        
+        // update pills
+        document.querySelectorAll('.tf-pill').forEach(p => p.classList.remove('active'));
+        event.target.classList.add('active');
+        
+        loadChartData(currentPair, tf);
+    };
+    
+    // ------------------- REPLAY MODE (FREE) -------------------
+    window.toggleReplay = function() {
+        replayActive = !replayActive;
+        const icon = document.getElementById('replayIcon');
+        
+        if (replayActive) {
+            icon.className = 'fa-solid fa-pause';
+            startReplay();
         } else {
-            // BTCUSD analysis
-            document.getElementById('h4').innerText = 'BEARISH (lower low)';
-            document.getElementById('tf15').innerText = '@ 67800 / 66900';
-            document.getElementById('tf5').innerText = 'EQH swept @ 67750 ✓';
-            document.getElementById('liquidity-note').innerHTML = '💧 5m equal highs swept · supply zone 67600-67850';
-            
-            let r = Math.random();
-            if (r < 0.5) {
-                document.getElementById('signal-box').className = 'signal-box signal-sell';
-                document.getElementById('signal-dir').innerHTML = '🔴 SELL SIGNAL';
-                document.getElementById('signal-reason').innerHTML = '⚡ H4 shift down · 15m EQH swept @ 67800 supply · 1m bearish';
-                document.getElementById('signal-zone').innerHTML = '<span class="highlight">📊 Supply: 67650-67900</span>';
-            } else if (r < 0.85) {
-                document.getElementById('signal-box').className = 'signal-box signal-buy';
-                document.getElementById('signal-dir').innerHTML = '🟢 BUY SIGNAL';
-                document.getElementById('signal-reason').innerHTML = '⚡ H4 BOS up · 5m EQL swept @ 66950 demand · 1m pinbar';
-                document.getElementById('signal-zone').innerHTML = '<span class="highlight">📊 Demand: 66800-67050</span>';
+            icon.className = 'fa-solid fa-play';
+            stopReplay();
+        }
+    };
+    
+    function startReplay() {
+        if (replayInterval) clearInterval(replayInterval);
+        
+        replayInterval = setInterval(() => {
+            if (replayIndex < allCandles.length - 1) {
+                replayIndex++;
+                updateReplayToIndex(replayIndex);
             } else {
-                document.getElementById('signal-box').className = 'signal-box signal-neutral';
-                document.getElementById('signal-dir').innerHTML = '🟡 NEUTRAL';
-                document.getElementById('signal-reason').innerHTML = '⏳ Consolidation, waiting for liquidity grab';
-                document.getElementById('signal-zone').innerHTML = '<span class="highlight">📊 Range 66800-67500</span>';
+                // reached end
+                stopReplay();
+                document.getElementById('replayIcon').className = 'fa-solid fa-play';
+                replayActive = false;
             }
-            
-            document.getElementById('current-price').innerText = (67250 + (Math.random()-0.5)*300).toFixed(0);
-            document.getElementById('price-change').innerHTML = '<span class="negative">▼ -' + (Math.random()*800+100).toFixed(0) + ' (0.' + Math.floor(Math.random()*80+20) + '%)</span>';
+        }, 300); // speed
+    }
+    
+    function stopReplay() {
+        if (replayInterval) {
+            clearInterval(replayInterval);
+            replayInterval = null;
         }
     }
     
-    window.refreshAnalysis = function() {
-        updateAnalysisForPair(currentPair);
+    window.replaySeek = function(value) {
+        replayIndex = Math.floor(value / 100 * (allCandles.length - 1));
+        updateReplayToIndex(replayIndex);
+    };
+    
+    function updateReplayToIndex(index) {
+        if (!allCandles.length) return;
+        
+        const candlesUpTo = allCandles.slice(0, index + 1);
+        candleSeries.setData(candlesUpTo);
+        
+        // update volume series too
+        const volumesUpTo = [];
+        for (let i = 0; i <= index; i++) {
+            const c = allCandles[i];
+            volumesUpTo.push({
+                time: c.time,
+                value: Math.floor(Math.random() * 5000 + 1000),
+                color: c.close >= c.open ? '#50fa7b60' : '#ff7b7b60',
+            });
+        }
+        volumeSeries.setData(volumesUpTo);
+        
+        // update slider
+        document.getElementById('replaySlider').value = (index / (allCandles.length - 1)) * 100;
+        
+        // update time display
+        updateReplayTime(allCandles[index].time);
+        
+        // update OHLC
+        updateOHLC(allCandles[index]);
+    }
+    
+    function updateReplayTime(timestamp) {
+        const date = new Date(timestamp * 1000);
+        const formatted = date.toISOString().slice(0, 10) + ' ' + 
+                         date.getHours().toString().padStart(2,'0') + ':' + 
+                         date.getMinutes().toString().padStart(2,'0');
+        document.getElementById('replayTime').innerText = formatted;
+    }
+    
+    window.resetReplay = function() {
+        stopReplay();
+        replayActive = false;
+        document.getElementById('replayIcon').className = 'fa-solid fa-play';
+        replayIndex = allCandles.length - 1;
+        updateReplayToIndex(replayIndex);
     };
     
     // Initialize
     window.onload = function() {
-        initTradingViewWidget('XAUUSD');
-        updateAnalysisForPair('XAUUSD');
+        initChart();
+        loadChartData('XAUUSD', '15');
         
-        // Auto refresh price every 5 seconds
+        // update OHLC every 5 seconds (simulated)
         setInterval(() => {
-            updateAnalysisForPair(currentPair);
+            if (!replayActive && allCandles.length > 0) {
+                // add a new candle to simulate live
+                const last = allCandles[allCandles.length - 1];
+                const newTime = last.time + 60 * parseInt(currentTimeframe);
+                const newClose = last.close + (Math.random() - 0.5) * (currentPair === 'XAUUSD' ? 2 : 150);
+                const newCandle = {
+                    time: newTime,
+                    open: last.close,
+                    high: Math.max(last.close, newClose) + Math.random(),
+                    low: Math.min(last.close, newClose) - Math.random(),
+                    close: newClose,
+                };
+                
+                allCandles.push(newCandle);
+                displayedCandles.push(newCandle);
+                
+                // keep last 200
+                if (allCandles.length > 200) allCandles.shift();
+                
+                candleSeries.update(newCandle);
+                volumeSeries.update({
+                    time: newTime,
+                    value: Math.floor(Math.random() * 5000 + 1000),
+                    color: newCandle.close >= newCandle.open ? '#50fa7b60' : '#ff7b7b60',
+                });
+                
+                updateOHLC(newCandle);
+                updateReplayTime(newTime);
+                replayMax = allCandles.length;
+            }
         }, 5000);
     };
 </script>
 </body>
 </html>
+```
