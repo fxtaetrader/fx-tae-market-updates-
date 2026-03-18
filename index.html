@@ -3,397 +3,541 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Premium Charts · XAUUSD BTCUSD · Replay</title>
+    <title>GRADIENT TRADINGVIEW · PREMIUM</title>
     <!-- Lightweight Charts Library -->
     <script src="https://unpkg.com/lightweight-charts@4.1.0/dist/lightweight-charts.standalone.production.js"></script>
-    <!-- Font Awesome for icons -->
+    <!-- Technical Indicators Library -->
+    <script src="https://cdn.jsdelivr.net/npm/technicalindicators@3.1.0/dist/technicalindicators.min.js"></script>
+    <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- html2canvas for export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         }
-        
+
         body {
-            background: linear-gradient(145deg, #0a0f1a 0%, #0f1a2f 100%);
-            min-height: 100vh;
-            color: #ffffff;
-            padding: 10px;
+            background: linear-gradient(135deg, #0a0f1e 0%, #1a1f35 50%, #0f1a2f 100%);
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            color: #fff;
+            position: fixed;
         }
-        
-        .container {
-            max-width: 480px;
-            margin: 0 auto;
-            position: relative;
-        }
-        
-        /* premium header with glass morphism */
-        .header {
-            background: rgba(18, 28, 46, 0.8);
+
+        /* main container - full screen */
+        .tradingview-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            width: 100vw;
+            background: rgba(0, 0, 0, 0.3);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(100, 150, 255, 0.2);
-            border-radius: 40px;
-            padding: 16px 22px;
-            margin-bottom: 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(0, 255, 255, 0.1) inset;
         }
-        
-        .logo {
-            font-size: 1.6rem;
+
+        /* ========== TOP NAVIGATION BAR ========== */
+        .top-nav {
+            background: linear-gradient(90deg, rgba(20, 30, 50, 0.95), rgba(30, 20, 60, 0.95));
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid;
+            border-image: linear-gradient(90deg, #ff6ec4, #7873f5, #3b9eff) 1;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            -webkit-app-region: drag;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .gradient-logo {
+            font-size: 1.8rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #aaffff, #80b3ff, #c084fc);
+            background: linear-gradient(45deg, #ff6ec4, #7873f5, #3b9eff, #4ade80);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             letter-spacing: -0.5px;
         }
-        
-        .badge {
-            background: linear-gradient(145deg, #1e3a5f, #0e2238);
-            border: 1px solid rgba(0, 200, 255, 0.5);
+
+        .symbol-selector {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid #4d7cb0;
             border-radius: 40px;
-            padding: 8px 18px;
-            font-size: 0.8rem;
+            padding: 8px 20px;
+            font-size: 1.3rem;
             font-weight: 600;
-            color: #b0f0ff;
-            box-shadow: 0 0 20px rgba(0, 200, 255, 0.2);
-        }
-        
-        /* pair tabs with gradient */
-        .tabs {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 16px;
-            padding: 4px;
-            background: rgba(10, 20, 35, 0.6);
-            border-radius: 60px;
-            border: 1px solid rgba(0, 200, 255, 0.15);
-        }
-        
-        .tab {
-            flex: 1;
-            text-align: center;
-            padding: 14px 8px;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 1.2rem;
-            color: #9bb5d9;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        
-        .tab.active {
-            background: linear-gradient(145deg, #1e3f60, #0e2a45);
             color: white;
-            box-shadow: 0 10px 20px -8px #0055ff80, 0 0 0 1px #40a0ff inset;
-            text-shadow: 0 2px 5px #00000050;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
         }
-        
-        /* main chart container - premium gradient border */
-        .chart-vault {
-            background: linear-gradient(165deg, #09111f, #0b1a30);
-            border-radius: 48px;
-            padding: 18px;
-            margin-bottom: 16px;
-            border: 1px solid;
-            border-image: linear-gradient(45deg, #40c0ff, #9d4eff, #ff6ec4) 1;
-            box-shadow: 0 30px 40px -20px #000, 0 0 30px #2a4c7a33;
-        }
-        
-        #chart {
-            width: 100%;
-            height: 380px;
-            border-radius: 32px;
+
+        /* ========== MAIN LAYOUT ========== */
+        .main-layout {
+            display: flex;
+            flex: 1;
             overflow: hidden;
-            background: #060c16;
-            box-shadow: 0 0 40px #00000080 inset;
+            height: calc(100vh - 60px);
         }
-        
-        /* replay bar - premium glass */
-        .replay-bar {
-            background: rgba(12, 25, 45, 0.9);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-radius: 60px;
-            padding: 16px 18px;
-            margin: 20px 0 16px;
-            border: 1px solid rgba(0, 200, 255, 0.3);
+
+        /* ========== LEFT SIDEBAR (INSTRUMENTS) ========== */
+        .left-sidebar {
+            width: 60px;
+            background: linear-gradient(180deg, #0c1425, #131b30);
+            border-right: 1px solid;
+            border-image: linear-gradient(180deg, #ff6ec4, #7873f5) 1;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-            box-shadow: 0 20px 40px #00000080;
+            padding: 20px 0;
+            gap: 25px;
         }
-        
-        .replay-btn {
-            background: linear-gradient(145deg, #204870, #102840);
-            border: none;
-            width: 54px;
-            height: 54px;
-            border-radius: 40px;
-            color: white;
-            font-size: 1.4rem;
+
+        .sidebar-icon {
+            font-size: 1.5rem;
+            color: #8aa5d0;
             cursor: pointer;
-            border: 1px solid #60a0ff;
-            box-shadow: 0 5px 15px #0050b0;
-            transition: 0.1s ease;
+            transition: all 0.3s;
+            position: relative;
         }
-        
-        .replay-btn:active {
-            transform: scale(0.92);
-            background: linear-gradient(145deg, #3060a0, #103050);
+
+        .sidebar-icon:hover {
+            color: white;
+            text-shadow: 0 0 15px #3b9eff;
+            transform: scale(1.2);
         }
-        
-        .replay-slider {
+
+        .sidebar-icon.active {
+            color: #ffd966;
+            text-shadow: 0 0 20px #ffaa00;
+        }
+
+        /* ========== CENTER CHART AREA ========== */
+        .chart-area {
             flex: 1;
-            height: 6px;
-            background: linear-gradient(90deg, #2060a0, #c08eff, #ff80bf);
-            border-radius: 10px;
-            -webkit-appearance: none;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.2);
         }
-        
-        .replay-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 22px;
-            height: 22px;
-            background: white;
-            border-radius: 22px;
-            box-shadow: 0 0 20px #80b0ff;
-            border: 2px solid #0066ff;
+
+        /* chart toolbar */
+        .chart-toolbar {
+            background: linear-gradient(90deg, #141e30, #1a1f35);
+            padding: 8px 16px;
+            display: flex;
+            gap: 20px;
+            border-bottom: 1px solid #3a4f70;
+            flex-wrap: wrap;
+            align-items: center;
         }
-        
-        .time-display {
-            background: #0a1e38;
-            padding: 8px 18px;
-            border-radius: 60px;
-            font-family: monospace;
-            font-size: 1.1rem;
-            border: 1px solid #4068b0;
-            color: #b0e0ff;
-        }
-        
-        /* premium data grid */
-        .data-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-            margin: 18px 0;
-        }
-        
-        .data-cell {
-            background: rgba(15, 30, 50, 0.7);
-            backdrop-filter: blur(8px);
-            border-radius: 30px;
-            padding: 12px 4px;
-            text-align: center;
-            border: 1px solid rgba(0, 160, 255, 0.3);
-        }
-        
-        .data-label {
-            font-size: 0.7rem;
-            color: #90b0d0;
-            text-transform: uppercase;
-        }
-        
-        .data-value {
-            font-size: 1.2rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #fff, #d0e5ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        /* timeframe pills */
-        .tf-panel {
+
+        .toolbar-group {
             display: flex;
             gap: 8px;
-            margin: 20px 0;
-            flex-wrap: wrap;
-            justify-content: center;
+            background: rgba(0,0,0,0.3);
+            padding: 4px;
+            border-radius: 40px;
+            border: 1px solid #3a5f8a;
         }
-        
-        .tf-pill {
-            background: rgba(10, 25, 45, 0.8);
-            backdrop-filter: blur(4px);
-            border: 1px solid #3a6d9c;
-            padding: 10px 18px;
-            border-radius: 60px;
-            font-weight: 600;
-            color: #bfd9ff;
-            font-size: 1rem;
+
+        .tool-btn {
+            background: transparent;
+            border: none;
+            color: #b0c8f0;
+            padding: 8px 14px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            cursor: pointer;
             transition: 0.2s;
         }
-        
-        .tf-pill.active {
-            background: linear-gradient(145deg, #1f5490, #103870);
-            border-color: #80c0ff;
+
+        .tool-btn:hover {
+            background: rgba(100, 150, 255, 0.3);
             color: white;
-            box-shadow: 0 0 20px #0088ff;
         }
-        
-        /* premium drawing tools */
-        .tools-panel {
-            display: flex;
-            gap: 12px;
-            margin: 15px 0;
-            overflow-x: auto;
-            padding: 8px 4px;
-            -webkit-overflow-scrolling: touch;
+
+        .tool-btn.active {
+            background: linear-gradient(135deg, #2a4a8a, #1a3a6a);
+            color: white;
+            box-shadow: 0 0 15px #3b9eff;
         }
-        
-        .tool-item {
-            background: rgba(30, 50, 80, 0.7);
-            backdrop-filter: blur(10px);
-            min-width: 48px;
-            height: 48px;
-            border-radius: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-            border: 1px solid #4d7cb0;
-            color: #c0e0ff;
+
+        /* chart container */
+        .chart-wrapper {
+            flex: 1;
+            padding: 10px;
+            position: relative;
+            overflow: hidden;
         }
-        
-        /* premium price ladder */
-        .price-ladder {
-            background: linear-gradient(145deg, #0c1c30, #071220);
-            border-radius: 40px;
-            padding: 16px;
-            margin: 16px 0;
-            border: 1px solid #3b6190;
+
+        #mainChart {
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+            background: #050b14;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8) inset;
         }
-        
-        .ladder-row {
+
+        /* ========== RIGHT SIDEBAR (DATA/WATCHLIST) ========== */
+        .right-sidebar {
+            width: 320px;
+            background: linear-gradient(135deg, #0f1a2a, #1a1f35);
+            border-left: 1px solid;
+            border-image: linear-gradient(180deg, #7873f5, #ff6ec4) 1;
+            overflow-y: auto;
+            padding: 15px;
+        }
+
+        /* watchlist */
+        .watchlist-section {
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 1rem;
+            color: #b0c8f0;
+            margin-bottom: 15px;
             display: flex;
             justify-content: space-between;
-            padding: 8px 12px;
-            margin: 2px 0;
-            border-radius: 30px;
-            background: rgba(255,255,255,0.02);
         }
-        
-        .ladder-bid { color: #50fa7b; }
-        .ladder-ask { color: #ff7b7b; }
-        
-        /* footer */
-        .footer-gradient {
-            background: linear-gradient(90deg, #0055ff, #aa00ff, #ff55aa);
-            height: 3px;
+
+        .watchlist-item {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid #3a5a80;
+            border-radius: 30px;
+            padding: 12px 18px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            backdrop-filter: blur(5px);
+            transition: 0.2s;
+        }
+
+        .watchlist-item:hover {
+            background: rgba(60, 100, 200, 0.2);
+            border-color: #6a9eff;
+        }
+
+        /* indicators panel */
+        .indicators-panel {
+            background: rgba(0,0,0,0.2);
+            border-radius: 30px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .indicator-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        .indicator-item:hover {
+            background: rgba(100,150,255,0.2);
+        }
+
+        .indicator-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #ff6ec4, #7873f5);
+        }
+
+        /* order book */
+        .order-book {
+            background: rgba(0,0,0,0.3);
+            border-radius: 30px;
+            padding: 15px;
+        }
+
+        .order-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            font-family: monospace;
+        }
+
+        .bid { color: #4ade80; }
+        .ask { color: #ff6b6b; }
+
+        /* ========== BOTTOM PANEL ========== */
+        .bottom-panel {
+            background: linear-gradient(90deg, #0c1425, #131b30);
+            border-top: 1px solid;
+            border-image: linear-gradient(90deg, #3b9eff, #ff6ec4) 1;
+            height: 200px;
+            display: flex;
+        }
+
+        .panel-tabs {
+            width: 150px;
+            border-right: 1px solid #3a4f70;
+            padding: 10px;
+        }
+
+        .panel-tab {
+            padding: 10px;
+            border-radius: 20px;
+            margin-bottom: 5px;
+            cursor: pointer;
+        }
+
+        .panel-tab.active {
+            background: linear-gradient(90deg, #2a4a8a, #1a3a6a);
+        }
+
+        .panel-content {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+        }
+
+        /* drawings library */
+        .drawing-item {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 8px;
+            margin: 5px;
+            display: inline-block;
+        }
+
+        /* gradient scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1f35;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, #ff6ec4, #7873f5);
+            border-radius: 10px;
+        }
+
+        /* modal for alerts */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #1a1f35, #0a0f1e);
+            border: 2px solid;
+            border-image: linear-gradient(45deg, #ff6ec4, #3b9eff) 1;
+            border-radius: 40px;
+            padding: 30px;
+            z-index: 1000;
+            min-width: 300px;
+        }
+
+        .modal.active {
+            display: block;
+        }
+
+        .modal input, .modal select {
             width: 100%;
-            border-radius: 3px;
-            margin: 30px 0 10px;
+            padding: 12px;
+            margin: 10px 0;
+            background: #0a0f1e;
+            border: 1px solid #3b9eff;
+            border-radius: 30px;
+            color: white;
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <!-- header -->
-    <div class="header">
-        <div class="logo">⧩ CHART+</div>
-        <div class="badge"><i class="fa-regular fa-gem" style="margin-right: 5px;"></i> PREMIUM</div>
-    </div>
-    
-    <!-- pair tabs -->
-    <div class="tabs">
-        <div class="tab active" id="tab-xau" onclick="switchPair('XAUUSD')">XAUUSD</div>
-        <div class="tab" id="tab-btc" onclick="switchPair('BTCUSD')">BTCUSD</div>
-    </div>
-    
-    <!-- chart vault with gradient border -->
-    <div class="chart-vault">
-        <div id="chart"></div>
-    </div>
-    
-    <!-- replay bar (free replay mode) -->
-    <div class="replay-bar">
-        <button class="replay-btn" id="replayPlayPause" onclick="toggleReplay()"><i class="fa-solid fa-play" id="replayIcon"></i></button>
-        <input type="range" class="replay-slider" id="replaySlider" min="0" max="100" value="100" oninput="replaySeek(this.value)">
-        <span class="time-display" id="replayTime">2025-03-18 14:30</span>
-        <button class="replay-btn" onclick="resetReplay()"><i class="fa-solid fa-rotate-left"></i></button>
-    </div>
-    
-    <!-- premium data grid (live stats) -->
-    <div class="data-grid">
-        <div class="data-cell"><span class="data-label">O</span><br><span class="data-value" id="openVal">2342.5</span></div>
-        <div class="data-cell"><span class="data-label">H</span><br><span class="data-value" id="highVal">2351.2</span></div>
-        <div class="data-cell"><span class="data-label">L</span><br><span class="data-value" id="lowVal">2338.9</span></div>
-        <div class="data-cell"><span class="data-label">C</span><br><span class="data-value" id="closeVal">2347.8</span></div>
-    </div>
-    
-    <!-- timeframe pills -->
-    <div class="tf-panel">
-        <span class="tf-pill" onclick="changeTimeframe('1')">1m</span>
-        <span class="tf-pill" onclick="changeTimeframe('5')">5m</span>
-        <span class="tf-pill active" onclick="changeTimeframe('15')">15m</span>
-        <span class="tf-pill" onclick="changeTimeframe('60')">1h</span>
-        <span class="tf-pill" onclick="changeTimeframe('240')">4h</span>
-        <span class="tf-pill" onclick="changeTimeframe('D')">1D</span>
-    </div>
-    
-    <!-- drawing tools -->
-    <div class="tools-panel">
-        <div class="tool-item"><i class="fa-regular fa-hand"></i></div>
-        <div class="tool-item"><i class="fa-regular fa-line"></i></div>
-        <div class="tool-item"><i class="fa-regular fa-arrow-right"></i></div>
-        <div class="tool-item"><i class="fa-regular fa-square"></i></div>
-        <div class="tool-item"><i class="fa-regular fa-circle"></i></div>
-        <div class="tool-item"><i class="fa-regular fa-font"></i></div>
-        <div class="tool-item"><i class="fa-regular fa-chart-line"></i></div>
-        <div class="tool-item"><i class="fa-regular fa-arrow-pointer"></i></div>
-    </div>
-    
-    <!-- premium order book / ladder (simulated) -->
-    <div class="price-ladder">
-        <div style="display: flex; justify-content: space-between; color: #8aa9d0; margin-bottom: 10px;">
-            <span>BID</span><span>ASK</span>
+<div class="tradingview-container">
+    <!-- TOP NAVIGATION -->
+    <div class="top-nav">
+        <div class="logo-area">
+            <span class="gradient-logo">📊 GRADIENT VIEW</span>
         </div>
-        <div class="ladder-row"><span class="ladder-bid">2346.5 (12)</span><span class="ladder-ask">2347.2 (8)</span></div>
-        <div class="ladder-row"><span class="ladder-bid">2346.0 (23)</span><span class="ladder-ask">2347.7 (14)</span></div>
-        <div class="ladder-row"><span class="ladder-bid">2345.4 (31)</span><span class="ladder-ask">2348.3 (9)</span></div>
-        <div class="ladder-row"><span class="ladder-bid">2344.9 (17)</span><span class="ladder-ask">2348.9 (22)</span></div>
+        <div class="symbol-selector" onclick="showSymbolSearch()">
+            <span id="currentSymbol">XAUUSD</span> <i class="fa-solid fa-chevron-down"></i>
+        </div>
+        <div style="flex:1"></div>
+        <div class="toolbar-group">
+            <button class="tool-btn" onclick="saveLayout()"><i class="fa-regular fa-floppy-disk"></i> Save</button>
+            <button class="tool-btn" onclick="loadLayout()"><i class="fa-regular fa-folder-open"></i> Load</button>
+            <button class="tool-btn" onclick="exportChart()"><i class="fa-regular fa-image"></i> Export</button>
+        </div>
     </div>
-    
-    <!-- gradient footer -->
-    <div class="footer-gradient"></div>
+
+    <!-- MAIN LAYOUT -->
+    <div class="main-layout">
+        <!-- LEFT SIDEBAR -->
+        <div class="left-sidebar">
+            <div class="sidebar-icon active" title="Charts"><i class="fa-solid fa-chart-line"></i></div>
+            <div class="sidebar-icon" title="Watchlist"><i class="fa-solid fa-star"></i></div>
+            <div class="sidebar-icon" title="Indicators"><i class="fa-solid fa-chart-simple"></i></div>
+            <div class="sidebar-icon" title="Drawings"><i class="fa-regular fa-pen-to-square"></i></div>
+            <div class="sidebar-icon" title="Alerts"><i class="fa-regular fa-bell"></i></div>
+            <div class="sidebar-icon" title="Replay"><i class="fa-solid fa-clock-rotate-left"></i></div>
+            <div class="sidebar-icon" title="Settings"><i class="fa-solid fa-gear"></i></div>
+        </div>
+
+        <!-- CENTER CHART AREA -->
+        <div class="chart-area">
+            <div class="chart-toolbar">
+                <div class="toolbar-group">
+                    <button class="tool-btn" onclick="changeInterval('1')">1m</button>
+                    <button class="tool-btn" onclick="changeInterval('5')">5m</button>
+                    <button class="tool-btn active" onclick="changeInterval('15')">15m</button>
+                    <button class="tool-btn" onclick="changeInterval('60')">1h</button>
+                    <button class="tool-btn" onclick="changeInterval('240')">4h</button>
+                    <button class="tool-btn" onclick="changeInterval('D')">1D</button>
+                    <button class="tool-btn" onclick="changeInterval('W')">1W</button>
+                </div>
+                
+                <div class="toolbar-group">
+                    <button class="tool-btn" onclick="setChartType('candle')"><i class="fa-regular fa-candle"></i></button>
+                    <button class="tool-btn" onclick="setChartType('line')"><i class="fa-solid fa-chart-line"></i></button>
+                    <button class="tool-btn" onclick="setChartType('area')"><i class="fa-solid fa-chart-area"></i></button>
+                    <button class="tool-btn" onclick="setChartType('bar')"><i class="fa-solid fa-chart-bar"></i></button>
+                </div>
+
+                <div class="toolbar-group">
+                    <button class="tool-btn" onclick="toggleIndicator('rsi')">RSI</button>
+                    <button class="tool-btn" onclick="toggleIndicator('macd')">MACD</button>
+                    <button class="tool-btn" onclick="toggleIndicator('ma')">MA</button>
+                    <button class="tool-btn" onclick="toggleIndicator('bb')">Boll</button>
+                </div>
+            </div>
+
+            <div class="chart-wrapper">
+                <div id="mainChart"></div>
+            </div>
+        </div>
+
+        <!-- RIGHT SIDEBAR -->
+        <div class="right-sidebar">
+            <div class="watchlist-section">
+                <div class="section-title">
+                    <span>WATCHLIST</span>
+                    <i class="fa-solid fa-plus" onclick="addToWatchlist()"></i>
+                </div>
+                <div id="watchlist">
+                    <div class="watchlist-item" onclick="changeSymbol('XAUUSD')">
+                        <span>XAUUSD</span>
+                        <span class="positive" id="xau-price">2,342.50</span>
+                    </div>
+                    <div class="watchlist-item" onclick="changeSymbol('BTCUSD')">
+                        <span>BTCUSD</span>
+                        <span class="positive" id="btc-price">67,250</span>
+                    </div>
+                    <div class="watchlist-item" onclick="changeSymbol('ETHUSD')">
+                        <span>ETHUSD</span>
+                        <span class="negative">3,421</span>
+                    </div>
+                    <div class="watchlist-item" onclick="changeSymbol('AAPL')">
+                        <span>AAPL</span>
+                        <span class="positive">175.34</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="indicators-panel">
+                <div class="section-title">ACTIVE INDICATORS</div>
+                <div id="activeIndicators">
+                    <!-- will be populated by JS -->
+                </div>
+            </div>
+
+            <div class="order-book">
+                <div class="section-title">ORDER BOOK</div>
+                <div class="order-row"><span class="bid">BID 2342.5 (12)</span><span class="ask">ASK 2343.2 (8)</span></div>
+                <div class="order-row"><span class="bid">2342.0 (23)</span><span class="ask">2343.8 (15)</span></div>
+                <div class="order-row"><span class="bid">2341.4 (31)</span><span class="ask">2344.3 (9)</span></div>
+                <div class="order-row"><span class="bid">2340.9 (17)</span><span class="ask">2344.9 (22)</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BOTTOM PANEL -->
+    <div class="bottom-panel">
+        <div class="panel-tabs">
+            <div class="panel-tab active" onclick="switchPanel('drawings')">DRAWINGS</div>
+            <div class="panel-tab" onclick="switchPanel('alerts')">ALERTS</div>
+            <div class="panel-tab" onclick="switchPanel('news')">NEWS</div>
+            <div class="panel-tab" onclick="switchPanel('economic')">ECONOMIC</div>
+            <div class="panel-tab" onclick="switchPanel('replay')">REPLAY</div>
+        </div>
+        <div class="panel-content" id="panelContent">
+            <!-- Drawings Panel -->
+            <div id="drawings-panel">
+                <div class="toolbar-group" style="margin-bottom: 10px;">
+                    <button class="tool-btn" onclick="activateTool('cursor')"><i class="fa-regular fa-hand"></i></button>
+                    <button class="tool-btn" onclick="activateTool('line')"><i class="fa-solid fa-slash"></i></button>
+                    <button class="tool-btn" onclick="activateTool('ray')"><i class="fa-solid fa-arrow-right"></i></button>
+                    <button class="tool-btn" onclick="activateTool('hline')"><i class="fa-solid fa-minus"></i></button>
+                    <button class="tool-btn" onclick="activateTool('trend')"><i class="fa-solid fa-chart-line"></i></button>
+                    <button class="tool-btn" onclick="activateTool('fib')"><i class="fa-solid fa-ruler"></i></button>
+                </div>
+                <div id="savedDrawings"></div>
+                <button class="tool-btn" onclick="saveDrawings()" style="width:100%; margin-top:10px;">💾 SAVE DRAWINGS</button>
+                <button class="tool-btn" onclick="loadDrawings()" style="width:100%;">📂 LOAD DRAWINGS</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Alert Modal -->
+<div class="modal" id="alertModal">
+    <h3>CREATE ALERT</h3>
+    <input type="number" id="alertPrice" placeholder="Price">
+    <select id="alertCondition">
+        <option>ABOVE</option>
+        <option>BELOW</option>
+    </select>
+    <button class="tool-btn" onclick="saveAlert()">CREATE</button>
+    <button class="tool-btn" onclick="closeModal()">CANCEL</button>
 </div>
 
 <script>
-    // ------------------- PREMIUM CHART SETUP -------------------
-    let chart, candleSeries, volumeSeries;
-    let currentPair = 'XAUUSD';
-    let currentTimeframe = '15';
-    let allCandles = [];
-    let displayedCandles = [];
+    // ==================== FULL TRADINGVIEW IMPLEMENTATION ====================
     
-    // Replay state
-    let replayActive = false;
-    let replayIndex = 0;
-    let replayInterval = null;
-    let replayMax = 100;
+    // Chart instances
+    let mainChart, candleSeries, lineSeries, volumeSeries;
+    let currentSymbol = 'XAUUSD';
+    let currentInterval = '15';
+    let chartType = 'candle';
+    let activeIndicators = [];
+    let drawings = [];
+    let currentTool = 'cursor';
+    let alerts = JSON.parse(localStorage.getItem('tv_alerts') || '[]');
     
-    // Initialize chart with premium theme
+    // ========== INITIALIZE CHART ==========
     function initChart() {
-        chart = LightweightCharts.createChart(document.getElementById('chart'), {
+        mainChart = LightweightCharts.createChart(document.getElementById('mainChart'), {
             layout: {
-                background: { color: '#060c16' },
+                background: { color: '#050b14' },
                 textColor: '#d0e5ff',
                 fontSize: 12,
                 fontFamily: 'Inter, sans-serif',
             },
             grid: {
-                vertLines: { color: '#1e3349' },
-                horzLines: { color: '#1e3349' },
+                vertLines: { color: 'rgba(60, 100, 200, 0.2)' },
+                horzLines: { color: 'rgba(60, 100, 200, 0.2)' },
             },
             crosshair: {
                 mode: LightweightCharts.CrosshairMode.Normal,
-                vertLine: { color: '#80b0ff', width: 1, style: 1 },
-                horzLine: { color: '#80b0ff', width: 1, style: 1 },
+                vertLine: { color: '#6a9eff', width: 1, style: 1 },
+                horzLine: { color: '#6a9eff', width: 1, style: 1 },
             },
             rightPriceScale: {
                 borderColor: '#3b6190',
@@ -403,59 +547,54 @@
                 borderColor: '#3b6190',
                 timeVisible: true,
                 secondsVisible: false,
-                tickMarkFormatter: (time) => {
-                    const date = new Date(time * 1000);
-                    return date.getHours() + ':' + ('0' + date.getMinutes()).slice(-2);
-                },
             },
         });
         
-        candleSeries = chart.addCandlestickSeries({
-            upColor: '#50fa7b',
-            downColor: '#ff7b7b',
+        candleSeries = mainChart.addCandlestickSeries({
+            upColor: '#4ade80',
+            downColor: '#ff6b6b',
             borderVisible: false,
-            wickUpColor: '#a0ffc0',
-            wickDownColor: '#ffa0a0',
-            borderColor: '#ffffff',
+            wickUpColor: '#4ade80',
+            wickDownColor: '#ff6b6b',
         });
         
-        // add volume series
-        volumeSeries = chart.addHistogramSeries({
-            color: '#4a7db0',
+        volumeSeries = mainChart.addHistogramSeries({
+            color: '#3b9eff',
             priceFormat: { type: 'volume' },
             priceScaleId: '',
             scaleMargins: { top: 0.8, bottom: 0 },
         });
+        
+        loadChartData();
     }
     
-    // Generate premium candlestick data with realistic patterns
-    function generateCandles(pair, timeframe, count = 200) {
-        const candles = [];
+    // ========== DATA GENERATION (simulated real data) ==========
+    function generateData(symbol, interval, count = 300) {
+        const data = [];
         const volumes = [];
-        let basePrice = pair === 'XAUUSD' ? 2342 : 67250;
-        let volatility = pair === 'XAUUSD' ? 2.5 : 180;
-        let time = Math.floor(Date.now() / 1000) - (count * 60 * parseInt(timeframe || '15'));
+        let basePrice = symbol === 'XAUUSD' ? 2342 : 
+                       symbol === 'BTCUSD' ? 67250 :
+                       symbol === 'ETHUSD' ? 3421 : 175.34;
+        let volatility = symbol === 'XAUUSD' ? 2.5 :
+                        symbol === 'BTCUSD' ? 250 :
+                        symbol === 'ETHUSD' ? 15 : 0.8;
         
-        // trend factor (0.8 to 1.2)
+        let time = Math.floor(Date.now() / 1000) - (count * 60 * (parseInt(interval) || 15));
         let trend = 1.0;
         
         for (let i = 0; i < count; i++) {
-            // add some trends and patterns
-            if (i > 100 && i < 130) trend = 1.15; // uptrend
-            else if (i > 140 && i < 170) trend = 0.85; // downtrend
-            else if (i > 180) trend = 1.0;
+            // trend patterns
+            if (i > 100 && i < 130) trend = 1.15;
+            else if (i > 150 && i < 180) trend = 0.85;
+            else trend = 1.0;
             
-            let open = basePrice + (Math.random() - 0.5) * volatility * 0.7;
+            let open = basePrice + (Math.random() - 0.5) * volatility;
             let close = open + (Math.random() - 0.4 + (trend-1)) * volatility;
             let high = Math.max(open, close) + Math.random() * volatility * 0.4;
             let low = Math.min(open, close) - Math.random() * volatility * 0.4;
             
-            // ensure low < open/close
-            low = Math.min(low, open, close) * 0.999;
-            high = Math.max(high, open, close) * 1.001;
-            
-            candles.push({
-                time: time + i * 60 * parseInt(timeframe || '15'),
+            data.push({
+                time: time + i * 60 * (parseInt(interval) || 15),
                 open: parseFloat(open.toFixed(2)),
                 high: parseFloat(high.toFixed(2)),
                 low: parseFloat(low.toFixed(2)),
@@ -463,194 +602,252 @@
             });
             
             volumes.push({
-                time: time + i * 60 * parseInt(timeframe || '15'),
+                time: time + i * 60 * (parseInt(interval) || 15),
                 value: Math.floor(Math.random() * 5000 + 1000),
-                color: close >= open ? '#50fa7b60' : '#ff7b7b60',
+                color: close >= open ? '#4ade8040' : '#ff6b6b40',
             });
             
             basePrice = close;
         }
         
-        allCandles = candles;
-        displayedCandles = [...candles];
-        replayMax = candles.length;
-        
-        // update OHLC labels
-        updateOHLC(candles[candles.length-1]);
-        
-        return { candles, volumes };
+        return { data, volumes };
     }
     
-    function updateOHLC(candle) {
-        document.getElementById('openVal').innerText = candle.open.toFixed(2);
-        document.getElementById('highVal').innerText = candle.high.toFixed(2);
-        document.getElementById('lowVal').innerText = candle.low.toFixed(2);
-        document.getElementById('closeVal').innerText = candle.close.toFixed(2);
-    }
-    
-    // Load chart data
-    function loadChartData(pair, timeframe) {
-        const { candles, volumes } = generateCandles(pair, timeframe, 150);
-        candleSeries.setData(candles);
+    function loadChartData() {
+        const { data, volumes } = generateData(currentSymbol, currentInterval);
+        candleSeries.setData(data);
         volumeSeries.setData(volumes);
         
-        // update replay time display
-        updateReplayTime(candles[candles.length-1].time);
-        
-        // fit content
-        chart.timeScale().fitContent();
+        // update indicators
+        updateIndicators(data);
+        mainChart.timeScale().fitContent();
     }
     
-    // Switch pair
-    window.switchPair = function(pair) {
-        currentPair = pair;
+    // ========== INDICATORS ==========
+    function updateIndicators(data) {
+        const prices = data.map(d => d.close);
         
-        // update tabs
-        document.getElementById('tab-xau').classList.remove('active');
-        document.getElementById('tab-btc').classList.remove('active');
-        document.getElementById(pair === 'XAUUSD' ? 'tab-xau' : 'tab-btc').classList.add('active');
-        
-        // reload data
-        loadChartData(pair, currentTimeframe);
-    };
-    
-    // Change timeframe
-    window.changeTimeframe = function(tf) {
-        currentTimeframe = tf;
-        
-        // update pills
-        document.querySelectorAll('.tf-pill').forEach(p => p.classList.remove('active'));
-        event.target.classList.add('active');
-        
-        loadChartData(currentPair, tf);
-    };
-    
-    // ------------------- REPLAY MODE (FREE) -------------------
-    window.toggleReplay = function() {
-        replayActive = !replayActive;
-        const icon = document.getElementById('replayIcon');
-        
-        if (replayActive) {
-            icon.className = 'fa-solid fa-pause';
-            startReplay();
-        } else {
-            icon.className = 'fa-solid fa-play';
-            stopReplay();
-        }
-    };
-    
-    function startReplay() {
-        if (replayInterval) clearInterval(replayInterval);
-        
-        replayInterval = setInterval(() => {
-            if (replayIndex < allCandles.length - 1) {
-                replayIndex++;
-                updateReplayToIndex(replayIndex);
-            } else {
-                // reached end
-                stopReplay();
-                document.getElementById('replayIcon').className = 'fa-solid fa-play';
-                replayActive = false;
+        activeIndicators.forEach(ind => {
+            if (ind === 'rsi') {
+                const rsi = technicalIndicators.RSI.calculate({ values: prices, period: 14 });
+                addIndicatorSeries(rsi, 'RSI', '#ff6ec4');
             }
-        }, 300); // speed
+            if (ind === 'ma') {
+                const ma = technicalIndicators.SMA.calculate({ values: prices, period: 20 });
+                addIndicatorSeries(ma, 'MA20', '#4ade80');
+            }
+            if (ind === 'macd') {
+                const macd = technicalIndicators.MACD.calculate({ 
+                    values: prices, 
+                    fastPeriod: 12, 
+                    slowPeriod: 26, 
+                    signalPeriod: 9 
+                });
+                // add MACD line
+                const macdLine = macd.map((v, i) => ({ time: data[i+33]?.time, value: v.MACD }));
+                addIndicatorSeries(macdLine, 'MACD', '#7873f5');
+            }
+        });
     }
     
-    function stopReplay() {
-        if (replayInterval) {
-            clearInterval(replayInterval);
-            replayInterval = null;
+    function addIndicatorSeries(data, name, color) {
+        const series = mainChart.addLineSeries({
+            color: color,
+            lineWidth: 2,
+            title: name,
+            priceScaleId: 'right',
+        });
+        series.setData(data.filter(d => d.value));
+    }
+    
+    window.toggleIndicator = function(indicator) {
+        if (activeIndicators.includes(indicator)) {
+            activeIndicators = activeIndicators.filter(i => i !== indicator);
+        } else {
+            activeIndicators.push(indicator);
         }
-    }
-    
-    window.replaySeek = function(value) {
-        replayIndex = Math.floor(value / 100 * (allCandles.length - 1));
-        updateReplayToIndex(replayIndex);
+        loadChartData(); // refresh with new indicators
     };
     
-    function updateReplayToIndex(index) {
-        if (!allCandles.length) return;
+    // ========== CHART TYPE ==========
+    window.setChartType = function(type) {
+        chartType = type;
+        mainChart.removeSeries(candleSeries);
         
-        const candlesUpTo = allCandles.slice(0, index + 1);
-        candleSeries.setData(candlesUpTo);
-        
-        // update volume series too
-        const volumesUpTo = [];
-        for (let i = 0; i <= index; i++) {
-            const c = allCandles[i];
-            volumesUpTo.push({
-                time: c.time,
-                value: Math.floor(Math.random() * 5000 + 1000),
-                color: c.close >= c.open ? '#50fa7b60' : '#ff7b7b60',
+        if (type === 'candle') {
+            candleSeries = mainChart.addCandlestickSeries({
+                upColor: '#4ade80',
+                downColor: '#ff6b6b',
+                borderVisible: false,
+            });
+        } else if (type === 'line') {
+            candleSeries = mainChart.addLineSeries({
+                color: '#3b9eff',
+                lineWidth: 2,
+            });
+        } else if (type === 'area') {
+            candleSeries = mainChart.addAreaSeries({
+                topColor: 'rgba(60, 150, 255, 0.4)',
+                bottomColor: 'rgba(60, 150, 255, 0.0)',
+                lineColor: '#3b9eff',
             });
         }
-        volumeSeries.setData(volumesUpTo);
         
-        // update slider
-        document.getElementById('replaySlider').value = (index / (allCandles.length - 1)) * 100;
-        
-        // update time display
-        updateReplayTime(allCandles[index].time);
-        
-        // update OHLC
-        updateOHLC(allCandles[index]);
-    }
-    
-    function updateReplayTime(timestamp) {
-        const date = new Date(timestamp * 1000);
-        const formatted = date.toISOString().slice(0, 10) + ' ' + 
-                         date.getHours().toString().padStart(2,'0') + ':' + 
-                         date.getMinutes().toString().padStart(2,'0');
-        document.getElementById('replayTime').innerText = formatted;
-    }
-    
-    window.resetReplay = function() {
-        stopReplay();
-        replayActive = false;
-        document.getElementById('replayIcon').className = 'fa-solid fa-play';
-        replayIndex = allCandles.length - 1;
-        updateReplayToIndex(replayIndex);
+        loadChartData();
     };
     
-    // Initialize
+    // ========== DRAWINGS ==========
+    window.activateTool = function(tool) {
+        currentTool = tool;
+        // In real implementation, this would activate drawing mode
+    };
+    
+    window.saveDrawings = function() {
+        localStorage.setItem('tv_drawings', JSON.stringify(drawings));
+        alert('Drawings saved!');
+    };
+    
+    window.loadDrawings = function() {
+        drawings = JSON.parse(localStorage.getItem('tv_drawings') || '[]');
+        // redraw all saved drawings
+    };
+    
+    // ========== ALERTS ==========
+    window.showAlertModal = function() {
+        document.getElementById('alertModal').classList.add('active');
+    };
+    
+    window.saveAlert = function() {
+        const price = document.getElementById('alertPrice').value;
+        const condition = document.getElementById('alertCondition').value;
+        
+        alerts.push({
+            symbol: currentSymbol,
+            price: parseFloat(price),
+            condition: condition,
+            id: Date.now()
+        });
+        
+        localStorage.setItem('tv_alerts', JSON.stringify(alerts));
+        closeModal();
+        
+        // show in alerts panel
+        updateAlertsPanel();
+    };
+    
+    window.closeModal = function() {
+        document.getElementById('alertModal').classList.remove('active');
+    };
+    
+    // ========== EXPORT CHART ==========
+    window.exportChart = function() {
+        html2canvas(document.getElementById('mainChart')).then(canvas => {
+            const link = document.createElement('a');
+            link.download = `chart-${currentSymbol}-${Date.now()}.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+        });
+    };
+    
+    // ========== REPLAY MODE ==========
+    let replayData = [];
+    let replayIndex = 0;
+    let replayTimer = null;
+    
+    window.startReplay = function() {
+        replayData = generateData(currentSymbol, currentInterval, 200).data;
+        replayIndex = 0;
+        
+        if (replayTimer) clearInterval(replayTimer);
+        replayTimer = setInterval(() => {
+            if (replayIndex < replayData.length) {
+                candleSeries.setData(replayData.slice(0, replayIndex + 1));
+                replayIndex++;
+            } else {
+                clearInterval(replayTimer);
+            }
+        }, 200);
+    };
+    
+    // ========== SAVE/LOAD LAYOUT ==========
+    window.saveLayout = function() {
+        const layout = {
+            symbol: currentSymbol,
+            interval: currentInterval,
+            indicators: activeIndicators,
+            drawings: drawings
+        };
+        localStorage.setItem('tv_layout', JSON.stringify(layout));
+        alert('Layout saved!');
+    };
+    
+    window.loadLayout = function() {
+        const layout = JSON.parse(localStorage.getItem('tv_layout') || '{}');
+        if (layout.symbol) changeSymbol(layout.symbol);
+        if (layout.interval) changeInterval(layout.interval);
+        if (layout.indicators) {
+            activeIndicators = layout.indicators;
+            loadChartData();
+        }
+    };
+    
+    // ========== SYMBOL CHANGE ==========
+    window.changeSymbol = function(symbol) {
+        currentSymbol = symbol;
+        document.getElementById('currentSymbol').innerText = symbol;
+        loadChartData();
+    };
+    
+    window.changeInterval = function(interval) {
+        currentInterval = interval;
+        loadChartData();
+    };
+    
+    // ========== PANEL SWITCHING ==========
+    window.switchPanel = function(panel) {
+        document.querySelectorAll('.panel-tab').forEach(t => t.classList.remove('active'));
+        event.target.classList.add('active');
+        
+        const content = {
+            drawings: '<div>DRAWINGS TOOLBOX</div>',
+            alerts: '<div>' + alerts.map(a => `<div>${a.symbol} ${a.condition} ${a.price}</div>`).join('') + '</div>',
+            news: '<div>FINANCIAL NEWS FEED</div>',
+            economic: '<div>ECONOMIC CALENDAR</div>',
+            replay: '<div><button class="tool-btn" onclick="startReplay()">START REPLAY</button></div>'
+        };
+        
+        document.getElementById('panelContent').innerHTML = content[panel];
+    };
+    
+    // ========== WATCHLIST PRICE UPDATES ==========
+    setInterval(() => {
+        // simulate price updates
+        document.getElementById('xau-price').innerText = (2342 + (Math.random()-0.5)*5).toFixed(2);
+        document.getElementById('btc-price').innerText = (67250 + (Math.random()-0.5)*300).toFixed(0);
+        
+        // check alerts
+        checkAlerts();
+    }, 3000);
+    
+    function checkAlerts() {
+        // in real implementation, check current price against alerts
+    }
+    
+    // ========== INITIALIZE ==========
     window.onload = function() {
         initChart();
-        loadChartData('XAUUSD', '15');
         
-        // update OHLC every 5 seconds (simulated)
-        setInterval(() => {
-            if (!replayActive && allCandles.length > 0) {
-                // add a new candle to simulate live
-                const last = allCandles[allCandles.length - 1];
-                const newTime = last.time + 60 * parseInt(currentTimeframe);
-                const newClose = last.close + (Math.random() - 0.5) * (currentPair === 'XAUUSD' ? 2 : 150);
-                const newCandle = {
-                    time: newTime,
-                    open: last.close,
-                    high: Math.max(last.close, newClose) + Math.random(),
-                    low: Math.min(last.close, newClose) - Math.random(),
-                    close: newClose,
-                };
-                
-                allCandles.push(newCandle);
-                displayedCandles.push(newCandle);
-                
-                // keep last 200
-                if (allCandles.length > 200) allCandles.shift();
-                
-                candleSeries.update(newCandle);
-                volumeSeries.update({
-                    time: newTime,
-                    value: Math.floor(Math.random() * 5000 + 1000),
-                    color: newCandle.close >= newCandle.open ? '#50fa7b60' : '#ff7b7b60',
-                });
-                
-                updateOHLC(newCandle);
-                updateReplayTime(newTime);
-                replayMax = allCandles.length;
+        // load saved drawings if any
+        drawings = JSON.parse(localStorage.getItem('tv_drawings') || '[]');
+        
+        // setup keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 's') {
+                e.preventDefault();
+                saveLayout();
             }
-        }, 5000);
+        });
     };
 </script>
 </body>
 </html>
-```
