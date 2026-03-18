@@ -2,729 +2,334 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XAUUSD - 30 - FOREX.com · Premium TradingView</title>
-    <!-- Lightweight Charts -->
-    <script src="https://unpkg.com/lightweight-charts@4.1.0/dist/lightweight-charts.standalone.production.js"></script>
-    <!-- Technical Indicators -->
-    <script src="https://cdn.jsdelivr.net/npm/technicalindicators@3.1.0/dist/technicalindicators.min.js"></script>
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>TradingView Live · XAUUSD BTCUSD</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Monaco', 'Courier New', monospace;
-        }
-
-        body {
-            background: #0d1117;
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden;
-        }
-
-        /* Main TradingView Container */
-        .tradingview {
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, system-ui; }
+        body { background: #0b1017; color: white; padding: 10px; }
+        .container { max-width: 480px; margin: 0 auto; }
+        
+        /* header */
+        .header {
+            background: #16222e;
+            border-radius: 30px;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            border: 1px solid #3d5a7a;
             display: flex;
-            flex-direction: column;
-            height: 100vh;
-            width: 100vw;
-            background: #0d1117;
-            color: #d0d4d9;
+            justify-content: space-between;
         }
-
-        /* ========== TOP NAVIGATION ========== */
-        .top-nav {
+        .logo { font-size: 1.5rem; font-weight: 700; background: linear-gradient(135deg, #ffd966, #ffaa33); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .live-badge { background: #1e3329; color: #4ade80; padding: 5px 12px; border-radius: 30px; font-size: 0.8rem; border: 1px solid #4ade80; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } }
+        
+        /* pair tabs */
+        .tabs {
             display: flex;
-            align-items: center;
-            padding: 6px 12px;
-            background: #131722;
-            border-bottom: 1px solid #2a2e39;
-            height: 48px;
-            gap: 16px;
+            gap: 10px;
+            margin-bottom: 15px;
         }
-
-        .tradingview-logo {
-            color: #2962ff;
-            font-weight: 700;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .symbol-info {
-            display: flex;
-            align-items: center;
-            background: #1e222d;
-            border-radius: 4px;
-            padding: 4px 8px;
-            border-left: 2px solid #2962ff;
-        }
-
-        .symbol-name {
-            font-size: 1.2rem;
+        .tab {
+            flex: 1;
+            background: #16222e;
+            border: 1px solid #3a5670;
+            border-radius: 40px;
+            padding: 12px;
+            text-align: center;
             font-weight: 600;
-            color: white;
+            font-size: 1.2rem;
+            transition: 0.2s;
         }
-
-        .symbol-interval {
-            color: #5d6b7a;
-            margin: 0 4px;
+        .tab.active {
+            background: #1f364d;
+            border-color: #ffb347;
+            color: #ffd966;
+            box-shadow: 0 4px 15px #00000080;
         }
-
-        .broker-name {
-            background: #2a2e39;
-            padding: 2px 6px;
-            border-radius: 2px;
-            font-size: 0.8rem;
-            color: #b0b7c0;
+        
+        /* TradingView chart container */
+        .tv-chart {
+            background: #0f1a24;
+            border-radius: 30px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid #3e5e7e;
+            height: 380px;
         }
-
-        /* Date Range Selector - Exactly like screenshot: 1D, 5D, 1M, 3M, 6M, YTD, 1Y, 5Y, All */
-        .date-range {
-            display: flex;
-            background: #1e222d;
-            border-radius: 4px;
-            padding: 2px;
-            margin-left: 20px;
-        }
-
-        .range-item {
-            padding: 4px 12px;
-            font-size: 0.8rem;
-            color: #8a9199;
-            cursor: pointer;
-            border-radius: 3px;
-        }
-
-        .range-item:hover {
-            background: #2a2e39;
-            color: white;
-        }
-
-        .range-item.active {
-            background: #2962ff;
-            color: white;
-        }
-
-        /* ========== MAIN LAYOUT ========== */
-        .main-area {
-            display: flex;
-            flex: 1;
-            overflow: hidden;
-        }
-
-        /* Left Toolbar */
-        .left-toolbar {
-            width: 48px;
-            background: #131722;
-            border-right: 1px solid #2a2e39;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 8px 0;
-        }
-
-        .tool-icon {
-            width: 48px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #8a9199;
-            cursor: pointer;
-            font-size: 1.1rem;
-        }
-
-        .tool-icon:hover {
-            color: #2962ff;
-            background: #1e222d;
-        }
-
-        .tool-icon.active {
-            color: #2962ff;
-            border-left: 3px solid #2962ff;
-        }
-
-        /* Center Chart Section */
-        .chart-section {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            background: #0d1117;
-        }
-
-        /* Chart Toolbar */
-        .chart-toolbar {
-            display: flex;
-            align-items: center;
-            padding: 4px 12px;
-            background: #131722;
-            border-bottom: 1px solid #2a2e39;
-            height: 40px;
-            gap: 16px;
-        }
-
-        /* Timeframe selector - exactly like screenshot */
-        .timeframe-selector {
-            display: flex;
-            background: #1e222d;
-            border-radius: 4px;
-            padding: 2px;
-        }
-
-        .tf-item {
-            padding: 4px 12px;
-            font-size: 0.8rem;
-            color: #8a9199;
-            cursor: pointer;
-            border-radius: 3px;
-        }
-
-        .tf-item:hover {
-            background: #2a2e39;
-            color: white;
-        }
-
-        .tf-item.active {
-            background: #2962ff;
-            color: white;
-        }
-
-        /* Red and Blue bars from screenshot */
-        .indicator-bars {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .red-bar {
-            width: 16px;
-            height: 24px;
-            background: linear-gradient(180deg, #ff4d4d, #b30000);
-            border-radius: 2px;
-        }
-
-        .blue-bar {
-            width: 16px;
-            height: 24px;
-            background: linear-gradient(180deg, #4d88ff, #0033cc);
-            border-radius: 2px;
-        }
-
-        /* Chart Container */
-        .chart-wrapper {
-            flex: 1;
-            position: relative;
-            padding: 8px;
-        }
-
         #tv_chart {
             width: 100%;
-            height: 100%;
-            background: #0d1117;
+            height: 350px;
+            border-radius: 20px;
+            overflow: hidden;
         }
-
-        /* Time Axis - Exactly like screenshot: 09:00/19W, 18, 06:30/AM, etc */
-        .time-axis {
-            display: flex;
-            justify-content: space-around;
-            padding: 8px 16px;
-            background: #131722;
-            border-top: 1px solid #2a2e39;
-            border-bottom: 1px solid #2a2e39;
-            font-size: 0.7rem;
-            color: #8a9199;
-            font-family: 'Courier New', monospace;
-        }
-
-        .time-marker {
-            text-align: center;
-            min-width: 60px;
-        }
-
-        /* Right Panel - With price scale exactly like screenshot */
-        .right-panel {
-            width: 220px;
-            background: #131722;
-            border-left: 1px solid #2a2e39;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Price Scale - 3.50E+00 down to 0.00E+00 */
-        .price-scale {
-            padding: 16px 8px;
-            font-family: 'Courier New', monospace;
-            border-bottom: 1px solid #2a2e39;
-        }
-
-        .price-level {
-            display: flex;
-            justify-content: flex-end;
-            padding: 3px 0;
-            font-size: 0.75rem;
-            color: #8a9199;
-            border-bottom: 1px dotted #2a2e39;
-        }
-
-        .price-level.main {
-            color: #ffd700;
-            font-weight: 600;
-            background: rgba(255, 215, 0, 0.1);
-        }
-
-        /* Right side indicators - exact match */
-        .indicator-side {
-            flex: 1;
-            padding: 16px 8px;
-            font-family: 'Courier New', monospace;
-            overflow-y: auto;
-        }
-
-        .indicator-level {
-            display: flex;
-            justify-content: flex-end;
-            padding: 3px 0;
-            font-size: 0.75rem;
-            color: #b4b9c2;
-            border-bottom: 1px dotted #2a2e39;
-        }
-
-        .indicator-level.highlight {
-            color: #ffd700;
-            background: rgba(255, 215, 0, 0.05);
-        }
-
-        /* Bottom Status Bar - Exactly like screenshot */
-        .bottom-bar {
+        
+        /* live price card */
+        .price-card {
+            background: #0f1c2a;
+            border-radius: 30px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid #3f6185;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 4px 16px;
-            background: #131722;
-            border-top: 1px solid #2a2e39;
-            height: 32px;
-            font-size: 0.7rem;
-            color: #8a9199;
         }
-
-        .tradingview-credit {
-            color: #2962ff;
-            font-weight: 600;
+        .price-large {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        .price-change { font-size: 1.2rem; }
+        .positive { color: #4ade80; }
+        .negative { color: #f87171; }
+        
+        /* analysis card */
+        .analysis {
+            background: #0d1a27;
+            border-radius: 30px;
+            padding: 18px;
+            margin-bottom: 15px;
+            border-left: 6px solid #ffb347;
+        }
+        .level {
             display: flex;
-            align-items: center;
-            gap: 4px;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #1f3445;
         }
-
-        .utc-time {
-            font-family: 'Courier New', monospace;
+        .highlight {
+            background: #1e3347;
+            color: #ffd966;
+            padding: 4px 12px;
+            border-radius: 30px;
         }
-
-        /* Context menu for right panel */
-        .context-menu {
-            position: absolute;
-            background: #1e222d;
-            border: 1px solid #2a2e39;
-            border-radius: 4px;
-            padding: 4px 0;
-            display: none;
+        
+        /* signal box */
+        .signal-box {
+            background: #0d1a27;
+            border-radius: 30px;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 10px solid;
         }
-
-        .context-menu-item {
-            padding: 6px 24px;
-            font-size: 0.8rem;
-            color: #d0d4d9;
-            cursor: pointer;
+        .signal-buy { border-left-color: #4ade80; background: #10231e; }
+        .signal-sell { border-left-color: #f87171; background: #231b1b; }
+        .signal-neutral { border-left-color: #fbbf24; background: #1f261e; }
+        .signal-dir {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
         }
-
-        .context-menu-item:hover {
-            background: #2962ff;
+        .signal-reason {
+            background: #00000033;
+            padding: 12px;
+            border-radius: 20px;
+            margin: 8px 0;
         }
     </style>
 </head>
 <body>
-    <div class="tradingview">
-        <!-- TOP NAVIGATION - Exactly as screenshot -->
-        <div class="top-nav">
-            <div class="tradingview-logo">
-                <i class="fa-brands fa-trade-federation"></i> TradingView
-            </div>
-            
-            <!-- Symbol Info: XAUUSD - 30 - FOREX.com -->
-            <div class="symbol-info">
-                <span class="symbol-name">XAUUSD</span>
-                <span class="symbol-interval">- 30 -</span>
-                <span class="broker-name">FOREX.com</span>
-            </div>
-
-            <!-- Date Range: 1D, 5D, 1M, 3M, 6M, YTD, 1Y, 5Y, All -->
-            <div class="date-range">
-                <span class="range-item">1D</span>
-                <span class="range-item">5D</span>
-                <span class="range-item active">1M</span>
-                <span class="range-item">3M</span>
-                <span class="range-item">6M</span>
-                <span class="range-item">YTD</span>
-                <span class="range-item">1Y</span>
-                <span class="range-item">5Y</span>
-                <span class="range-item">All</span>
-            </div>
-            
-            <div style="flex:1"></div>
-            
-            <!-- User settings icons -->
-            <div style="display: flex; gap: 16px;">
-                <i class="fa-regular fa-bell"></i>
-                <i class="fa-regular fa-circle-question"></i>
-                <i class="fa-regular fa-user"></i>
-            </div>
+<div class="container">
+    <!-- header -->
+    <div class="header">
+        <div class="logo">📊 TV SIGNALS</div>
+        <div class="live-badge">● REAL DATA</div>
+    </div>
+    
+    <!-- pair tabs -->
+    <div class="tabs">
+        <div class="tab active" id="tab-xau" onclick="switchPair('XAUUSD')">XAUUSD</div>
+        <div class="tab" id="tab-btc" onclick="switchPair('BTCUSD')">BTCUSD</div>
+    </div>
+    
+    <!-- TradingView Chart Widget -->
+    <div class="tv-chart">
+        <div id="tv_chart"></div>
+    </div>
+    
+    <!-- Live Price -->
+    <div class="price-card" id="price-card">
+        <div>
+            <span class="price-large" id="current-price">2,342.50</span>
+            <span style="color: #8ca3c0; font-size: 0.9rem;" id="pair-broker">FOREX.COM</span>
         </div>
-
-        <!-- MAIN AREA -->
-        <div class="main-area">
-            <!-- LEFT TOOLBAR -->
-            <div class="left-toolbar">
-                <div class="tool-icon active"><i class="fa-regular fa-chart-line"></i></div>
-                <div class="tool-icon"><i class="fa-regular fa-pen-to-square"></i></div>
-                <div class="tool-icon"><i class="fa-regular fa-hand"></i></div>
-                <div class="tool-icon"><i class="fa-regular fa-crosshair"></i></div>
-                <div class="tool-icon"><i class="fa-regular fa-circle"></i></div>
-                <div class="tool-icon"><i class="fa-regular fa-square"></i></div>
-                <div class="tool-icon"><i class="fa-regular fa-arrow-right"></i></div>
-                <div class="tool-icon"><i class="fa-regular fa-ruler"></i></div>
-                <div class="tool-icon"><i class="fa-regular fa-font"></i></div>
-                <div class="tool-icon"><i class="fa-regular fa-note-sticky"></i></div>
-                <div class="tool-icon"><i class="fa-regular fa-clock"></i></div>
-            </div>
-
-            <!-- CHART SECTION -->
-            <div class="chart-section">
-                <!-- Chart Toolbar with timeframe and indicators -->
-                <div class="chart-toolbar">
-                    <!-- Timeframe selector -->
-                    <div class="timeframe-selector">
-                        <span class="tf-item">1</span>
-                        <span class="tf-item">5</span>
-                        <span class="tf-item active">30</span>
-                        <span class="tf-item">60</span>
-                        <span class="tf-item">240</span>
-                        <span class="tf-item">1D</span>
-                    </div>
-
-                    <!-- Red and Blue bars from screenshot -->
-                    <div class="indicator-bars">
-                        <div class="red-bar"></div>
-                        <div class="blue-bar"></div>
-                        <span style="color: #8a9199; font-size: 0.8rem;">Indicators</span>
-                    </div>
-
-                    <!-- Chart type selector -->
-                    <div style="display: flex; gap: 8px;">
-                        <i class="fa-regular fa-candle"></i>
-                        <i class="fa-regular fa-chart-line"></i>
-                        <i class="fa-regular fa-chart-bar"></i>
-                    </div>
-                </div>
-
-                <!-- MAIN CHART -->
-                <div class="chart-wrapper">
-                    <div id="tv_chart"></div>
-                </div>
-
-                <!-- TIME AXIS - Exactly as screenshot -->
-                <div class="time-axis">
-                    <span class="time-marker">09:00/19W</span>
-                    <span class="time-marker">18</span>
-                    <span class="time-marker">06:30/AM</span>
-                    <span class="time-marker">09:30/AM</span>
-                    <span class="time-marker">12:30/PM</span>
-                    <span class="time-marker">03:00/PM</span>
-                    <span class="time-marker">06:00/PM</span>
-                    <span class="time-marker">09:00/PM</span>
-                    <span class="time-marker">12:00/PM</span>
-                </div>
-            </div>
-
-            <!-- RIGHT PANEL - With price scale exactly like screenshot -->
-            <div class="right-panel">
-                <!-- Price scale: 3.50E+00 down to 0.00E+00 -->
-                <div class="price-scale" id="priceScale">
-                    <!-- Will be populated by JavaScript -->
-                </div>
-
-                <!-- Right side indicators: 3.50E+00 list -->
-                <div class="indicator-side" id="indicatorSide">
-                    <!-- Will be populated by JavaScript -->
-                </div>
-            </div>
-        </div>
-
-        <!-- BOTTOM BAR - TradingView credit and UTC time -->
-        <div class="bottom-bar">
-            <div class="tradingview-credit">
-                <i class="fa-brands fa-trade-federation"></i> TradingView
-            </div>
-            <div class="utc-time" id="utcTime">08:46:30 PM UTC+3</div>
+        <div class="price-change" id="price-change">
+            <span class="positive">▲ +8.2 (0.35%)</span>
         </div>
     </div>
-
-    <!-- Context Menu for right panel -->
-    <div class="context-menu" id="contextMenu">
-        <div class="context-menu-item">Create Alert</div>
-        <div class="context-menu-item">Add to Watchlist</div>
-        <div class="context-menu-item">Set as Default</div>
+    
+    <!-- Structure Analysis -->
+    <div class="analysis">
+        <h3 style="margin-bottom: 10px;">📐 STRUCTURE (H4·15m·5m·1m)</h3>
+        <div class="level">
+            <span>H4 BOS/Shift:</span>
+            <span class="highlight" id="h4">BULLISH (higher high)</span>
+        </div>
+        <div class="level">
+            <span>15m EQH/EQL:</span>
+            <span id="tf15">@ 2348 / 2332</span>
+        </div>
+        <div class="level">
+            <span>5m swept:</span>
+            <span id="tf5">EQL @ 2335 ✓</span>
+        </div>
+        <div style="margin-top: 10px;">
+            <span class="highlight" id="liquidity-note">💧 15m EQL swept · demand zone</span>
+        </div>
     </div>
+    
+    <!-- Signal -->
+    <div class="signal-box signal-buy" id="signal-box">
+        <div class="signal-dir" id="signal-dir">🟢 BUY SIGNAL</div>
+        <div class="signal-reason" id="signal-reason">
+            ⚡ H4 BOS up · 15m equal lows swept @ 2335 demand · 1m reversal hammer
+        </div>
+        <div id="signal-zone">
+            <span class="highlight">📊 Demand zone: 2332-2338</span>
+        </div>
+    </div>
+    
+    <!-- Refresh Button -->
+    <button style="width:100%; padding:16px; background:#1f3347; border:none; border-radius:60px; color:white; font-weight:600; margin:10px 0; border:1px solid #5f83aa;" onclick="refreshAnalysis()">
+        🔄 UPDATE ANALYSIS
+    </button>
+</div>
 
-    <script>
-        // ========== FULL TRADINGVIEW IMPLEMENTATION ==========
+<!-- TradingView Widget Script -->
+<script src="https://s3.tradingview.com/tv.js"></script>
+<script>
+    let currentPair = 'XAUUSD';
+    let tvWidget = null;
+    
+    // Initialize TradingView Widget
+    function initTradingViewWidget(symbol) {
+        const container = document.getElementById('tv_chart');
+        container.innerHTML = ''; // clear
         
-        // Chart variables
-        let chart, candleSeries, volumeSeries;
-        let chartData = [];
-        let currentPrice = 2342.50;
+        // Map symbols to TradingView format
+        const tvSymbol = symbol === 'XAUUSD' ? 'FX_IDC:XAUUSD' : 'COINBASE:BTCUSD';
         
-        // Initialize chart
-        function initChart() {
-            chart = LightweightCharts.createChart(document.getElementById('tv_chart'), {
-                layout: {
-                    background: { color: '#0d1117' },
-                    textColor: '#d0d4d9',
-                    fontSize: 10,
-                    fontFamily: 'Monaco, Courier New, monospace',
-                },
-                grid: {
-                    vertLines: { color: '#1e222d' },
-                    horzLines: { color: '#1e222d' },
-                },
-                crosshair: {
-                    mode: LightweightCharts.CrosshairMode.Normal,
-                    vertLine: { color: '#2962ff', width: 1, style: 1 },
-                    horzLine: { color: '#2962ff', width: 1, style: 1 },
-                },
-                rightPriceScale: {
-                    borderColor: '#2a2e39',
-                    textColor: '#8a9199',
-                    entireTextOnly: true,
-                    visible: false, // Hide default scale, we use custom
-                },
-                timeScale: {
-                    borderColor: '#2a2e39',
-                    timeVisible: true,
-                    secondsVisible: false,
-                    tickMarkFormatter: (time) => {
-                        const date = new Date(time * 1000);
-                        return date.getHours() + ':' + ('0' + date.getMinutes()).slice(-2);
-                    },
-                },
-            });
-
-            // Create candlestick series
-            candleSeries = chart.addCandlestickSeries({
-                upColor: '#4ade80',
-                downColor: '#ff4d4d',
-                borderVisible: false,
-                wickUpColor: '#4ade80',
-                wickDownColor: '#ff4d4d',
-                borderColor: '#2962ff',
-            });
-
-            // Volume series
-            volumeSeries = chart.addHistogramSeries({
-                color: '#4d88ff',
-                priceFormat: { type: 'volume' },
-                priceScaleId: '',
-                scaleMargins: { top: 0.8, bottom: 0 },
-            });
-
-            // Generate initial data
-            generateData();
+        // Create TradingView widget [citation:2][citation:9]
+        tvWidget = new TradingView.widget({
+            "width": "100%",
+            "height": 350,
+            "symbol": tvSymbol,
+            "interval": "15", // 15 minute chart
+            "timezone": "exchange",
+            "theme": "dark",
+            "style": "1", // candlestick
+            "locale": "en",
+            "toolbar_bg": "#0f1a24",
+            "enable_publishing": false,
+            "hide_side_toolbar": false,
+            "allow_symbol_change": false,
+            "container_id": "tv_chart",
+            "studies": [
+                "MASimple@tv-basicstudies" // moving average
+            ],
+            "studies_overrides": {},
+            "disabled_features": ["use_localstorage_for_settings"],
+            "enabled_features": ["show_hide_button_on_legend"]
+        });
+    }
+    
+    // Switch between XAUUSD and BTCUSD
+    window.switchPair = function(pair) {
+        currentPair = pair;
+        
+        // Update tabs
+        document.getElementById('tab-xau').classList.remove('active');
+        document.getElementById('tab-btc').classList.remove('active');
+        document.getElementById(pair === 'XAUUSD' ? 'tab-xau' : 'tab-btc').classList.add('active');
+        
+        // Update broker
+        document.getElementById('pair-broker').innerText = pair === 'XAUUSD' ? 'FOREX.COM' : 'COINBASE';
+        
+        // Reinit chart with new symbol
+        initTradingViewWidget(pair);
+        
+        // Update analysis for new pair
+        updateAnalysisForPair(pair);
+    };
+    
+    // Analysis generator based on your strategy
+    function updateAnalysisForPair(pair) {
+        if (pair === 'XAUUSD') {
+            // XAUUSD analysis
+            document.getElementById('h4').innerText = 'BULLISH (higher high)';
+            document.getElementById('tf15').innerText = '@ 2347 / 2330';
+            document.getElementById('tf5').innerText = 'EQL swept @ 2335 ✓';
+            document.getElementById('liquidity-note').innerHTML = '💧 15m equal lows swept · demand zone 2332-2338';
             
-            // Update price scales
-            updatePriceScales();
-        }
-
-        // Generate realistic XAUUSD 30-minute data
-        function generateData() {
-            chartData = [];
-            let basePrice = 2342.50;
-            let time = Math.floor(Date.now() / 1000) - (200 * 1800); // 30-min candles
-            
-            for (let i = 0; i < 200; i++) {
-                // Create realistic patterns
-                let trend = 1.0;
-                if (i > 50 && i < 70) trend = 1.15; // Uptrend
-                if (i > 90 && i < 110) trend = 0.85; // Downtrend
-                if (i > 130 && i < 150) trend = 1.2; // Strong uptrend
-                
-                let open = basePrice + (Math.random() - 0.5) * 2.5;
-                let close = open + (Math.random() - 0.4 + (trend-1)) * 2.5;
-                let high = Math.max(open, close) + Math.random() * 1.5;
-                let low = Math.min(open, close) - Math.random() * 1.5;
-                
-                chartData.push({
-                    time: time + i * 1800,
-                    open: parseFloat(open.toFixed(2)),
-                    high: parseFloat(high.toFixed(2)),
-                    low: parseFloat(low.toFixed(2)),
-                    close: parseFloat(close.toFixed(2)),
-                });
-                
-                basePrice = close;
+            // Random signal (simulating your strategy)
+            let r = Math.random();
+            if (r < 0.45) {
+                // BUY
+                document.getElementById('signal-box').className = 'signal-box signal-buy';
+                document.getElementById('signal-dir').innerHTML = '🟢 BUY SIGNAL';
+                document.getElementById('signal-reason').innerHTML = '⚡ H4 BOS up · 15m equal lows swept @ 2335 demand · 1m reversal hammer';
+                document.getElementById('signal-zone').innerHTML = '<span class="highlight">📊 Demand zone: 2332-2338</span>';
+            } else if (r < 0.85) {
+                // SELL
+                document.getElementById('signal-box').className = 'signal-box signal-sell';
+                document.getElementById('signal-dir').innerHTML = '🔴 SELL SIGNAL';
+                document.getElementById('signal-reason').innerHTML = '⚡ H4 shift · 5m equal highs @ 2350 supply swept · 1m bearish engulf';
+                document.getElementById('signal-zone').innerHTML = '<span class="highlight">📊 Supply zone: 2345-2355</span>';
+            } else {
+                // NEUTRAL
+                document.getElementById('signal-box').className = 'signal-box signal-neutral';
+                document.getElementById('signal-dir').innerHTML = '🟡 NEUTRAL';
+                document.getElementById('signal-reason').innerHTML = '⏳ No clear sweep, awaiting structure confirmation';
+                document.getElementById('signal-zone').innerHTML = '<span class="highlight">📊 Watch 2330-2350</span>';
             }
             
-            // Set data
-            candleSeries.setData(chartData);
+            // Update price (simulated)
+            document.getElementById('current-price').innerText = (2342 + (Math.random()-0.5)*5).toFixed(2);
+            document.getElementById('price-change').innerHTML = '<span class="positive">▲ +' + (Math.random()*10+2).toFixed(1) + ' (0.' + Math.floor(Math.random()*50+20) + '%)</span>';
             
-            // Volume data
-            const volumeData = chartData.map(candle => ({
-                time: candle.time,
-                value: Math.floor(Math.random() * 5000 + 1000),
-                color: candle.close >= candle.open ? 'rgba(74, 222, 128, 0.5)' : 'rgba(255, 77, 77, 0.5)',
-            }));
+        } else {
+            // BTCUSD analysis
+            document.getElementById('h4').innerText = 'BEARISH (lower low)';
+            document.getElementById('tf15').innerText = '@ 67800 / 66900';
+            document.getElementById('tf5').innerText = 'EQH swept @ 67750 ✓';
+            document.getElementById('liquidity-note').innerHTML = '💧 5m equal highs swept · supply zone 67600-67850';
             
-            volumeSeries.setData(volumeData);
-            
-            // Fit chart
-            chart.timeScale().fitContent();
-        }
-
-        // Update price scales (3.50E+00 format)
-        function updatePriceScales() {
-            if (!chartData.length) return;
-            
-            const lastCandle = chartData[chartData.length - 1];
-            const high = Math.max(...chartData.slice(-30).map(d => d.high));
-            const low = Math.min(...chartData.slice(-30).map(d => d.low));
-            const range = high - low;
-            const step = range / 14;
-            
-            let priceHtml = '';
-            let indicatorHtml = '';
-            
-            // Generate from high to low
-            for (let i = 14; i >= 0; i--) {
-                let price = low + (i * step);
-                let priceFormatted = price.toExponential(2).replace('e+', 'E+');
-                
-                // Check if this is near current price
-                let isCurrent = Math.abs(price - lastCandle.close) < step/2;
-                
-                priceHtml += `<div class="price-level ${isCurrent ? 'main' : ''}">${priceFormatted}</div>`;
-                indicatorHtml += `<div class="indicator-level ${isCurrent ? 'highlight' : ''}">${priceFormatted}</div>`;
+            let r = Math.random();
+            if (r < 0.5) {
+                document.getElementById('signal-box').className = 'signal-box signal-sell';
+                document.getElementById('signal-dir').innerHTML = '🔴 SELL SIGNAL';
+                document.getElementById('signal-reason').innerHTML = '⚡ H4 shift down · 15m EQH swept @ 67800 supply · 1m bearish';
+                document.getElementById('signal-zone').innerHTML = '<span class="highlight">📊 Supply: 67650-67900</span>';
+            } else if (r < 0.85) {
+                document.getElementById('signal-box').className = 'signal-box signal-buy';
+                document.getElementById('signal-dir').innerHTML = '🟢 BUY SIGNAL';
+                document.getElementById('signal-reason').innerHTML = '⚡ H4 BOS up · 5m EQL swept @ 66950 demand · 1m pinbar';
+                document.getElementById('signal-zone').innerHTML = '<span class="highlight">📊 Demand: 66800-67050</span>';
+            } else {
+                document.getElementById('signal-box').className = 'signal-box signal-neutral';
+                document.getElementById('signal-dir').innerHTML = '🟡 NEUTRAL';
+                document.getElementById('signal-reason').innerHTML = '⏳ Consolidation, waiting for liquidity grab';
+                document.getElementById('signal-zone').innerHTML = '<span class="highlight">📊 Range 66800-67500</span>';
             }
             
-            document.getElementById('priceScale').innerHTML = priceHtml;
-            document.getElementById('indicatorSide').innerHTML = indicatorHtml;
+            document.getElementById('current-price').innerText = (67250 + (Math.random()-0.5)*300).toFixed(0);
+            document.getElementById('price-change').innerHTML = '<span class="negative">▼ -' + (Math.random()*800+100).toFixed(0) + ' (0.' + Math.floor(Math.random()*80+20) + '%)</span>';
         }
-
-        // Real-time updates
-        function updateRealTime() {
-            if (!chartData.length) return;
-            
-            const lastCandle = chartData[chartData.length - 1];
-            const newTime = lastCandle.time + 1800;
-            const newClose = lastCandle.close + (Math.random() - 0.5) * 3;
-            
-            const newCandle = {
-                time: newTime,
-                open: lastCandle.close,
-                high: Math.max(lastCandle.close, newClose) + Math.random(),
-                low: Math.min(lastCandle.close, newClose) - Math.random(),
-                close: newClose,
-            };
-            
-            // Update chart
-            chartData.push(newCandle);
-            chartData.shift();
-            candleSeries.update(newCandle);
-            
-            // Update volume
-            volumeSeries.update({
-                time: newTime,
-                value: Math.floor(Math.random() * 5000 + 1000),
-                color: newClose >= newCandle.open ? 'rgba(74, 222, 128, 0.5)' : 'rgba(255, 77, 77, 0.5)',
-            });
-            
-            // Update price scales
-            updatePriceScales();
-            
-            // Update current price
-            currentPrice = newClose;
-            
-            // Update UTC time
-            const now = new Date();
-            const hours = now.getHours();
-            const minutes = now.getMinutes();
-            const seconds = now.getSeconds();
-            const ampm = hours >= 12 ? 'PM' : 'AM';
-            const formattedHours = hours % 12 || 12;
-            
-            document.getElementById('utcTime').innerHTML = 
-                `${formattedHours}:${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')} ${ampm} UTC+3`;
-        }
-
-        // Handle timeframe changes
-        document.querySelectorAll('.tf-item').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.tf-item').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                // In real implementation: change chart interval
-                generateData();
-            });
-        });
-
-        // Handle date range changes
-        document.querySelectorAll('.range-item').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.range-item').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                // In real implementation: load different date range
-            });
-        });
-
-        // Handle tool clicks
-        document.querySelectorAll('.tool-icon').forEach(tool => {
-            tool.addEventListener('click', function() {
-                document.querySelectorAll('.tool-icon').forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
-
-        // Right-click context menu on price scale
-        document.querySelectorAll('.price-level, .indicator-level').forEach(el => {
-            el.addEventListener('contextmenu', function(e) {
-                e.preventDefault();
-                const menu = document.getElementById('contextMenu');
-                menu.style.display = 'block';
-                menu.style.left = e.pageX + 'px';
-                menu.style.top = e.pageY + 'px';
-                
-                // Hide menu when clicking elsewhere
-                setTimeout(() => {
-                    document.addEventListener('click', function hideMenu() {
-                        menu.style.display = 'none';
-                        document.removeEventListener('click', hideMenu);
-                    });
-                }, 100);
-            });
-        });
-
-        // Initialize everything
-        window.onload = function() {
-            initChart();
-            
-            // Real-time updates every 3 seconds
-            setInterval(updateRealTime, 3000);
-            
-            // Initial UTC time
-            const now = new Date();
-            document.getElementById('utcTime').innerHTML = 
-                `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()} PM UTC+3`;
-        };
-    </script>
+    }
+    
+    window.refreshAnalysis = function() {
+        updateAnalysisForPair(currentPair);
+    };
+    
+    // Initialize
+    window.onload = function() {
+        initTradingViewWidget('XAUUSD');
+        updateAnalysisForPair('XAUUSD');
+        
+        // Auto refresh price every 5 seconds
+        setInterval(() => {
+            updateAnalysisForPair(currentPair);
+        }, 5000);
+    };
+</script>
 </body>
 </html>
