@@ -2,852 +2,649 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GRADIENT TRADINGVIEW · PREMIUM</title>
-    <!-- Lightweight Charts Library -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XAUUSD · 30 · FOREX.com · Premium Gradient</title>
+    <!-- Lightweight Charts -->
     <script src="https://unpkg.com/lightweight-charts@4.1.0/dist/lightweight-charts.standalone.production.js"></script>
-    <!-- Technical Indicators Library -->
-    <script src="https://cdn.jsdelivr.net/npm/technicalindicators@3.1.0/dist/technicalindicators.min.js"></script>
-    <!-- Font Awesome 6 -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- html2canvas for export -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Trebuchet MS', Roboto, sans-serif;
         }
 
         body {
-            background: linear-gradient(135deg, #0a0f1e 0%, #1a1f35 50%, #0f1a2f 100%);
+            background-color: #0d1117;
             height: 100vh;
             width: 100vw;
             overflow: hidden;
-            color: #fff;
-            position: fixed;
         }
 
-        /* main container - full screen */
-        .tradingview-container {
+        /* Main container - exact TradingView layout */
+        .tradingview {
             display: flex;
             flex-direction: column;
             height: 100vh;
             width: 100vw;
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: #0d1117;
+            color: #d0d4d9;
         }
 
-        /* ========== TOP NAVIGATION BAR ========== */
+        /* ========== TOP NAVIGATION ========== */
         .top-nav {
-            background: linear-gradient(90deg, rgba(20, 30, 50, 0.95), rgba(30, 20, 60, 0.95));
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid;
-            border-image: linear-gradient(90deg, #ff6ec4, #7873f5, #3b9eff) 1;
-            padding: 8px 16px;
             display: flex;
             align-items: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            -webkit-app-region: drag;
+            padding: 4px 8px;
+            background: #131722;
+            border-bottom: 1px solid #2a2e39;
+            height: 48px;
+            gap: 16px;
         }
 
         .logo-area {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
-        .gradient-logo {
-            font-size: 1.8rem;
-            font-weight: 800;
-            background: linear-gradient(45deg, #ff6ec4, #7873f5, #3b9eff, #4ade80);
+        .logo {
+            background: linear-gradient(135deg, #ffd700, #ff8c00, #ff4500);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            letter-spacing: -0.5px;
+            font-weight: 700;
+            font-size: 1.2rem;
         }
 
-        .symbol-selector {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid #4d7cb0;
-            border-radius: 40px;
-            padding: 8px 20px;
+        .symbol-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #1e222d;
+            padding: 6px 12px;
+            border-radius: 6px;
+            border-left: 3px solid;
+            border-image: linear-gradient(180deg, #ffd700, #ff8c00) 1;
+        }
+
+        .symbol-name {
             font-size: 1.3rem;
             font-weight: 600;
             color: white;
-            cursor: pointer;
-            backdrop-filter: blur(10px);
         }
 
-        /* ========== MAIN LAYOUT ========== */
-        .main-layout {
+        .symbol-desc {
+            color: #8a9199;
+            font-size: 0.9rem;
+        }
+
+        .broker {
+            color: #ffd700;
+            background: #2a2e39;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        /* ========== MAIN CHART AREA ========== */
+        .main-area {
             display: flex;
             flex: 1;
             overflow: hidden;
-            height: calc(100vh - 60px);
         }
 
-        /* ========== LEFT SIDEBAR (INSTRUMENTS) ========== */
-        .left-sidebar {
-            width: 60px;
-            background: linear-gradient(180deg, #0c1425, #131b30);
-            border-right: 1px solid;
-            border-image: linear-gradient(180deg, #ff6ec4, #7873f5) 1;
+        /* Left sidebar - exactly like screenshot */
+        .left-toolbar {
+            width: 48px;
+            background: #131722;
+            border-right: 1px solid #2a2e39;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px 0;
-            gap: 25px;
+            padding: 8px 0;
+            gap: 16px;
         }
 
-        .sidebar-icon {
-            font-size: 1.5rem;
-            color: #8aa5d0;
+        .tool-icon {
+            color: #8a9199;
+            font-size: 1.2rem;
             cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
+            padding: 8px;
+            border-radius: 4px;
         }
 
-        .sidebar-icon:hover {
-            color: white;
-            text-shadow: 0 0 15px #3b9eff;
-            transform: scale(1.2);
+        .tool-icon:hover {
+            background: #2a2e39;
+            color: #ffd700;
         }
 
-        .sidebar-icon.active {
-            color: #ffd966;
-            text-shadow: 0 0 20px #ffaa00;
+        .tool-icon.active {
+            color: #ffd700;
+            border-left: 2px solid #ffd700;
         }
 
-        /* ========== CENTER CHART AREA ========== */
-        .chart-area {
+        /* Center chart section */
+        .chart-section {
             flex: 1;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
-            background: rgba(0, 0, 0, 0.2);
+            background: #0d1117;
         }
 
-        /* chart toolbar */
+        /* Chart toolbar - exactly like screenshot */
         .chart-toolbar {
-            background: linear-gradient(90deg, #141e30, #1a1f35);
-            padding: 8px 16px;
             display: flex;
-            gap: 20px;
-            border-bottom: 1px solid #3a4f70;
-            flex-wrap: wrap;
             align-items: center;
+            padding: 4px 12px;
+            background: #131722;
+            border-bottom: 1px solid #2a2e39;
+            gap: 16px;
+            height: 40px;
         }
 
-        .toolbar-group {
+        .timeframe-group {
             display: flex;
-            gap: 8px;
-            background: rgba(0,0,0,0.3);
-            padding: 4px;
-            border-radius: 40px;
-            border: 1px solid #3a5f8a;
+            gap: 2px;
+            background: #1e222d;
+            border-radius: 4px;
+            padding: 2px;
         }
 
-        .tool-btn {
+        .time-btn {
+            padding: 4px 12px;
+            font-size: 0.9rem;
+            color: #8a9199;
             background: transparent;
             border: none;
-            color: #b0c8f0;
-            padding: 8px 14px;
-            border-radius: 30px;
-            font-size: 0.9rem;
             cursor: pointer;
-            transition: 0.2s;
+            border-radius: 3px;
         }
 
-        .tool-btn:hover {
-            background: rgba(100, 150, 255, 0.3);
-            color: white;
+        .time-btn.active {
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            color: #131722;
+            font-weight: 600;
         }
 
-        .tool-btn.active {
-            background: linear-gradient(135deg, #2a4a8a, #1a3a6a);
-            color: white;
-            box-shadow: 0 0 15px #3b9eff;
-        }
-
-        /* chart container */
-        .chart-wrapper {
+        /* CHART CONTAINER - THIS IS WHERE YOUR SCREENSHOT CHART GOES */
+        .chart-container {
             flex: 1;
-            padding: 10px;
             position: relative;
-            overflow: hidden;
+            background: #0d1117;
+            padding: 10px;
         }
 
-        #mainChart {
+        #tv_chart {
             width: 100%;
             height: 100%;
-            border-radius: 20px;
-            background: #050b14;
-            box-shadow: 0 0 50px rgba(0,0,0,0.8) inset;
+            background: #0d1117;
         }
 
-        /* ========== RIGHT SIDEBAR (DATA/WATCHLIST) ========== */
-        .right-sidebar {
-            width: 320px;
-            background: linear-gradient(135deg, #0f1a2a, #1a1f35);
-            border-left: 1px solid;
-            border-image: linear-gradient(180deg, #7873f5, #ff6ec4) 1;
-            overflow-y: auto;
-            padding: 15px;
-        }
-
-        /* watchlist */
-        .watchlist-section {
-            margin-bottom: 25px;
-        }
-
-        .section-title {
-            font-size: 1rem;
-            color: #b0c8f0;
-            margin-bottom: 15px;
+        /* Right sidebar - exactly like screenshot with price scale */
+        .right-panel {
+            width: 220px;
+            background: #131722;
+            border-left: 1px solid #2a2e39;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
         }
 
-        .watchlist-item {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid #3a5a80;
-            border-radius: 30px;
-            padding: 12px 18px;
-            margin-bottom: 8px;
+        /* Price scale - exactly like your screenshot (3.50E+00 down to 0.00E+00) */
+        .price-scale {
+            padding: 16px 8px;
+            font-family: 'Courier New', monospace;
+            border-bottom: 1px solid #2a2e39;
+        }
+
+        .scale-item {
             display: flex;
-            justify-content: space-between;
-            backdrop-filter: blur(5px);
-            transition: 0.2s;
+            justify-content: flex-end;
+            padding: 4px 0;
+            font-size: 0.8rem;
+            color: #8a9199;
+            border-bottom: 1px dotted #2a2e39;
         }
 
-        .watchlist-item:hover {
-            background: rgba(60, 100, 200, 0.2);
-            border-color: #6a9eff;
+        .scale-item.main {
+            color: #ffd700;
+            font-weight: 600;
         }
 
-        /* indicators panel */
-        .indicators-panel {
-            background: rgba(0,0,0,0.2);
-            border-radius: 30px;
-            padding: 15px;
-            margin-bottom: 20px;
-        }
-
-        .indicator-item {
+        /* Time axis - exactly like screenshot (09:00/19W, 18, 06:30/AM etc) */
+        .time-axis {
             display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px;
-            border-radius: 20px;
-            cursor: pointer;
-        }
-
-        .indicator-item:hover {
-            background: rgba(100,150,255,0.2);
-        }
-
-        .indicator-color {
-            width: 20px;
-            height: 20px;
-            border-radius: 20px;
-            background: linear-gradient(135deg, #ff6ec4, #7873f5);
-        }
-
-        /* order book */
-        .order-book {
-            background: rgba(0,0,0,0.3);
-            border-radius: 30px;
-            padding: 15px;
-        }
-
-        .order-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 5px 0;
+            justify-content: space-around;
+            padding: 8px;
+            background: #131722;
+            border-top: 1px solid #2a2e39;
+            font-size: 0.75rem;
+            color: #8a9199;
             font-family: monospace;
         }
 
-        .bid { color: #4ade80; }
-        .ask { color: #ff6b6b; }
+        .time-marker {
+            text-align: center;
+        }
 
-        /* ========== BOTTOM PANEL ========== */
-        .bottom-panel {
-            background: linear-gradient(90deg, #0c1425, #131b30);
-            border-top: 1px solid;
-            border-image: linear-gradient(90deg, #3b9eff, #ff6ec4) 1;
-            height: 200px;
+        /* Bottom panel with TradingView credit */
+        .bottom-bar {
             display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 16px;
+            background: #131722;
+            border-top: 1px solid #2a2e39;
+            font-size: 0.75rem;
+            color: #5d6b7a;
+            height: 32px;
         }
 
-        .panel-tabs {
-            width: 150px;
-            border-right: 1px solid #3a4f70;
-            padding: 10px;
+        .tradingview-credit {
+            color: #ffd700;
+            font-weight: 600;
         }
 
-        .panel-tab {
-            padding: 10px;
-            border-radius: 20px;
-            margin-bottom: 5px;
+        .time-utc {
+            font-family: monospace;
+        }
+
+        /* Red and Blue bars exactly like screenshot */
+        .indicator-bars {
+            display: flex;
+            gap: 4px;
+            margin: 8px 0;
+        }
+
+        .red-bar {
+            width: 8px;
+            height: 30px;
+            background: linear-gradient(180deg, #ff4d4d, #cc0000);
+            border-radius: 2px;
+        }
+
+        .blue-bar {
+            width: 8px;
+            height: 30px;
+            background: linear-gradient(180deg, #4d88ff, #0033cc);
+            border-radius: 2px;
+        }
+
+        /* Date range selector - exactly like screenshot (1D, 5D, 1M, 3M etc) */
+        .date-range {
+            display: flex;
+            gap: 8px;
+            padding: 8px 16px;
+            background: #1e222d;
+            border-radius: 4px;
+        }
+
+        .range-btn {
+            color: #8a9199;
+            font-size: 0.85rem;
+            padding: 2px 8px;
             cursor: pointer;
         }
 
-        .panel-tab.active {
-            background: linear-gradient(90deg, #2a4a8a, #1a3a6a);
+        .range-btn.active {
+            color: #ffd700;
+            background: #2a2e39;
+            border-radius: 3px;
         }
 
-        .panel-content {
+        /* Right panel indicators (3.50E+00 list) */
+        .indicator-list {
             flex: 1;
-            padding: 15px;
+            padding: 16px 8px;
+            font-family: 'Courier New', monospace;
             overflow-y: auto;
         }
 
-        /* drawings library */
-        .drawing-item {
-            background: rgba(255,255,255,0.05);
-            border-radius: 15px;
-            padding: 8px;
-            margin: 5px;
-            display: inline-block;
+        .indicator-row {
+            display: flex;
+            justify-content: flex-end;
+            padding: 4px 0;
+            font-size: 0.8rem;
+            color: #b4b9c2;
+            border-bottom: 1px solid #2a2e39;
         }
 
-        /* gradient scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #1a1f35;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(45deg, #ff6ec4, #7873f5);
-            border-radius: 10px;
-        }
-
-        /* modal for alerts */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: linear-gradient(135deg, #1a1f35, #0a0f1e);
-            border: 2px solid;
-            border-image: linear-gradient(45deg, #ff6ec4, #3b9eff) 1;
-            border-radius: 40px;
-            padding: 30px;
-            z-index: 1000;
-            min-width: 300px;
-        }
-
-        .modal.active {
-            display: block;
-        }
-
-        .modal input, .modal select {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            background: #0a0f1e;
-            border: 1px solid #3b9eff;
-            border-radius: 30px;
-            color: white;
+        .indicator-row.highlight {
+            color: #ffd700;
+            background: rgba(255, 215, 0, 0.1);
         }
     </style>
 </head>
 <body>
-<div class="tradingview-container">
-    <!-- TOP NAVIGATION -->
-    <div class="top-nav">
-        <div class="logo-area">
-            <span class="gradient-logo">📊 GRADIENT VIEW</span>
+    <div class="tradingview">
+        <!-- TOP NAVIGATION - Exactly as screenshot -->
+        <div class="top-nav">
+            <div class="logo-area">
+                <span class="logo"><i class="fa-brands fa-trade-federation"></i> TRADINGVIEW</span>
+            </div>
+            <div class="symbol-info">
+                <span class="symbol-name">XAUUSD</span>
+                <span class="symbol-desc">· 30 · FOREX.com</span>
+                <span class="broker"><i class="fa-regular fa-building"></i> FOREX.com</span>
+            </div>
+            <div style="flex:1"></div>
+            <div class="date-range">
+                <span class="range-btn">1D</span>
+                <span class="range-btn">5D</span>
+                <span class="range-btn active">1M</span>
+                <span class="range-btn">3M</span>
+                <span class="range-btn">6M</span>
+                <span class="range-btn">YTD</span>
+                <span class="range-btn">1Y</span>
+                <span class="range-btn">5Y</span>
+                <span class="range-btn">All</span>
+            </div>
         </div>
-        <div class="symbol-selector" onclick="showSymbolSearch()">
-            <span id="currentSymbol">XAUUSD</span> <i class="fa-solid fa-chevron-down"></i>
+
+        <!-- MAIN AREA -->
+        <div class="main-area">
+            <!-- LEFT TOOLBAR -->
+            <div class="left-toolbar">
+                <div class="tool-icon active"><i class="fa-regular fa-chart-line"></i></div>
+                <div class="tool-icon"><i class="fa-regular fa-pen-to-square"></i></div>
+                <div class="tool-icon"><i class="fa-regular fa-hand"></i></div>
+                <div class="tool-icon"><i class="fa-regular fa-crosshair"></i></div>
+                <div class="tool-icon"><i class="fa-regular fa-circle"></i></div>
+                <div class="tool-icon"><i class="fa-regular fa-square"></i></div>
+                <div class="tool-icon"><i class="fa-regular fa-arrow-right"></i></div>
+                <div class="tool-icon"><i class="fa-regular fa-ruler"></i></div>
+                <div class="tool-icon"><i class="fa-regular fa-font"></i></div>
+                <div class="tool-icon"><i class="fa-regular fa-note-sticky"></i></div>
+            </div>
+
+            <!-- CHART SECTION -->
+            <div class="chart-section">
+                <!-- Chart toolbar with timeframe selectors -->
+                <div class="chart-toolbar">
+                    <div class="timeframe-group">
+                        <button class="time-btn">1</button>
+                        <button class="time-btn">5</button>
+                        <button class="time-btn active">30</button>
+                        <button class="time-btn">60</button>
+                        <button class="time-btn">240</button>
+                        <button class="time-btn">1D</button>
+                    </div>
+                    <div style="display: flex; gap: 8px; align-items: center;">
+                        <span class="red-bar"></span>
+                        <span class="blue-bar"></span>
+                        <span style="color:#8a9199;">Indicators</span>
+                    </div>
+                </div>
+
+                <!-- MAIN CHART - THIS IS YOUR SCREENSHOT AREA -->
+                <div class="chart-container">
+                    <div id="tv_chart"></div>
+                </div>
+
+                <!-- TIME AXIS - Exactly as screenshot (09:00/19W, 18, 06:30/AM, etc) -->
+                <div class="time-axis">
+                    <span class="time-marker">09:00/19W</span>
+                    <span class="time-marker">18</span>
+                    <span class="time-marker">06:30/AM</span>
+                    <span class="time-marker">09:30/AM</span>
+                    <span class="time-marker">12:30/PM</span>
+                    <span class="time-marker">03:00/PM</span>
+                    <span class="time-marker">06:00/PM</span>
+                    <span class="time-marker">09:00/PM</span>
+                    <span class="time-marker">12:00/PM</span>
+                </div>
+            </div>
+
+            <!-- RIGHT PANEL - Price scale and indicators exactly like screenshot -->
+            <div class="right-panel">
+                <!-- Price scale from 3.50E+00 down to 0.00E+00 -->
+                <div class="price-scale">
+                    <div class="scale-item">3.50E+00</div>
+                    <div class="scale-item">3.25E+00</div>
+                    <div class="scale-item">3.00E+00</div>
+                    <div class="scale-item">2.75E+00</div>
+                    <div class="scale-item">2.50E+00</div>
+                    <div class="scale-item main">2.25E+00</div>
+                    <div class="scale-item">2.00E+00</div>
+                    <div class="scale-item">1.75E+00</div>
+                    <div class="scale-item">1.50E+00</div>
+                    <div class="scale-item">1.25E+00</div>
+                    <div class="scale-item">1.00E+00</div>
+                    <div class="scale-item">0.75E+00</div>
+                    <div class="scale-item">0.50E+00</div>
+                    <div class="scale-item">0.25E+00</div>
+                    <div class="scale-item">0.00E+00</div>
+                </div>
+
+                <!-- Right side indicator list (exact match) -->
+                <div class="indicator-list">
+                    <div class="indicator-row">3.50E+00</div>
+                    <div class="indicator-row">3.25E+00</div>
+                    <div class="indicator-row">3.00E+00</div>
+                    <div class="indicator-row">2.75E+00</div>
+                    <div class="indicator-row">2.50E+00</div>
+                    <div class="indicator-row highlight">2.25E+00</div>
+                    <div class="indicator-row">2.00E+00</div>
+                    <div class="indicator-row">1.75E+00</div>
+                    <div class="indicator-row">1.50E+00</div>
+                    <div class="indicator-row">1.25E+00</div>
+                    <div class="indicator-row">1.00E+00</div>
+                    <div class="indicator-row">0.75E+00</div>
+                    <div class="indicator-row">0.50E+00</div>
+                    <div class="indicator-row">0.25E+00</div>
+                    <div class="indicator-row">0.00E+00</div>
+                </div>
+            </div>
         </div>
-        <div style="flex:1"></div>
-        <div class="toolbar-group">
-            <button class="tool-btn" onclick="saveLayout()"><i class="fa-regular fa-floppy-disk"></i> Save</button>
-            <button class="tool-btn" onclick="loadLayout()"><i class="fa-regular fa-folder-open"></i> Load</button>
-            <button class="tool-btn" onclick="exportChart()"><i class="fa-regular fa-image"></i> Export</button>
+
+        <!-- BOTTOM BAR - Exactly as screenshot with TradingView credit and time -->
+        <div class="bottom-bar">
+            <span class="tradingview-credit"><i class="fa-brands fa-trade-federation"></i> TradingView</span>
+            <span class="time-utc"><i class="fa-regular fa-clock"></i> 08:46:30 PM UTC+3</span>
         </div>
     </div>
 
-    <!-- MAIN LAYOUT -->
-    <div class="main-layout">
-        <!-- LEFT SIDEBAR -->
-        <div class="left-sidebar">
-            <div class="sidebar-icon active" title="Charts"><i class="fa-solid fa-chart-line"></i></div>
-            <div class="sidebar-icon" title="Watchlist"><i class="fa-solid fa-star"></i></div>
-            <div class="sidebar-icon" title="Indicators"><i class="fa-solid fa-chart-simple"></i></div>
-            <div class="sidebar-icon" title="Drawings"><i class="fa-regular fa-pen-to-square"></i></div>
-            <div class="sidebar-icon" title="Alerts"><i class="fa-regular fa-bell"></i></div>
-            <div class="sidebar-icon" title="Replay"><i class="fa-solid fa-clock-rotate-left"></i></div>
-            <div class="sidebar-icon" title="Settings"><i class="fa-solid fa-gear"></i></div>
-        </div>
-
-        <!-- CENTER CHART AREA -->
-        <div class="chart-area">
-            <div class="chart-toolbar">
-                <div class="toolbar-group">
-                    <button class="tool-btn" onclick="changeInterval('1')">1m</button>
-                    <button class="tool-btn" onclick="changeInterval('5')">5m</button>
-                    <button class="tool-btn active" onclick="changeInterval('15')">15m</button>
-                    <button class="tool-btn" onclick="changeInterval('60')">1h</button>
-                    <button class="tool-btn" onclick="changeInterval('240')">4h</button>
-                    <button class="tool-btn" onclick="changeInterval('D')">1D</button>
-                    <button class="tool-btn" onclick="changeInterval('W')">1W</button>
-                </div>
-                
-                <div class="toolbar-group">
-                    <button class="tool-btn" onclick="setChartType('candle')"><i class="fa-regular fa-candle"></i></button>
-                    <button class="tool-btn" onclick="setChartType('line')"><i class="fa-solid fa-chart-line"></i></button>
-                    <button class="tool-btn" onclick="setChartType('area')"><i class="fa-solid fa-chart-area"></i></button>
-                    <button class="tool-btn" onclick="setChartType('bar')"><i class="fa-solid fa-chart-bar"></i></button>
-                </div>
-
-                <div class="toolbar-group">
-                    <button class="tool-btn" onclick="toggleIndicator('rsi')">RSI</button>
-                    <button class="tool-btn" onclick="toggleIndicator('macd')">MACD</button>
-                    <button class="tool-btn" onclick="toggleIndicator('ma')">MA</button>
-                    <button class="tool-btn" onclick="toggleIndicator('bb')">Boll</button>
-                </div>
-            </div>
-
-            <div class="chart-wrapper">
-                <div id="mainChart"></div>
-            </div>
-        </div>
-
-        <!-- RIGHT SIDEBAR -->
-        <div class="right-sidebar">
-            <div class="watchlist-section">
-                <div class="section-title">
-                    <span>WATCHLIST</span>
-                    <i class="fa-solid fa-plus" onclick="addToWatchlist()"></i>
-                </div>
-                <div id="watchlist">
-                    <div class="watchlist-item" onclick="changeSymbol('XAUUSD')">
-                        <span>XAUUSD</span>
-                        <span class="positive" id="xau-price">2,342.50</span>
-                    </div>
-                    <div class="watchlist-item" onclick="changeSymbol('BTCUSD')">
-                        <span>BTCUSD</span>
-                        <span class="positive" id="btc-price">67,250</span>
-                    </div>
-                    <div class="watchlist-item" onclick="changeSymbol('ETHUSD')">
-                        <span>ETHUSD</span>
-                        <span class="negative">3,421</span>
-                    </div>
-                    <div class="watchlist-item" onclick="changeSymbol('AAPL')">
-                        <span>AAPL</span>
-                        <span class="positive">175.34</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="indicators-panel">
-                <div class="section-title">ACTIVE INDICATORS</div>
-                <div id="activeIndicators">
-                    <!-- will be populated by JS -->
-                </div>
-            </div>
-
-            <div class="order-book">
-                <div class="section-title">ORDER BOOK</div>
-                <div class="order-row"><span class="bid">BID 2342.5 (12)</span><span class="ask">ASK 2343.2 (8)</span></div>
-                <div class="order-row"><span class="bid">2342.0 (23)</span><span class="ask">2343.8 (15)</span></div>
-                <div class="order-row"><span class="bid">2341.4 (31)</span><span class="ask">2344.3 (9)</span></div>
-                <div class="order-row"><span class="bid">2340.9 (17)</span><span class="ask">2344.9 (22)</span></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- BOTTOM PANEL -->
-    <div class="bottom-panel">
-        <div class="panel-tabs">
-            <div class="panel-tab active" onclick="switchPanel('drawings')">DRAWINGS</div>
-            <div class="panel-tab" onclick="switchPanel('alerts')">ALERTS</div>
-            <div class="panel-tab" onclick="switchPanel('news')">NEWS</div>
-            <div class="panel-tab" onclick="switchPanel('economic')">ECONOMIC</div>
-            <div class="panel-tab" onclick="switchPanel('replay')">REPLAY</div>
-        </div>
-        <div class="panel-content" id="panelContent">
-            <!-- Drawings Panel -->
-            <div id="drawings-panel">
-                <div class="toolbar-group" style="margin-bottom: 10px;">
-                    <button class="tool-btn" onclick="activateTool('cursor')"><i class="fa-regular fa-hand"></i></button>
-                    <button class="tool-btn" onclick="activateTool('line')"><i class="fa-solid fa-slash"></i></button>
-                    <button class="tool-btn" onclick="activateTool('ray')"><i class="fa-solid fa-arrow-right"></i></button>
-                    <button class="tool-btn" onclick="activateTool('hline')"><i class="fa-solid fa-minus"></i></button>
-                    <button class="tool-btn" onclick="activateTool('trend')"><i class="fa-solid fa-chart-line"></i></button>
-                    <button class="tool-btn" onclick="activateTool('fib')"><i class="fa-solid fa-ruler"></i></button>
-                </div>
-                <div id="savedDrawings"></div>
-                <button class="tool-btn" onclick="saveDrawings()" style="width:100%; margin-top:10px;">💾 SAVE DRAWINGS</button>
-                <button class="tool-btn" onclick="loadDrawings()" style="width:100%;">📂 LOAD DRAWINGS</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Alert Modal -->
-<div class="modal" id="alertModal">
-    <h3>CREATE ALERT</h3>
-    <input type="number" id="alertPrice" placeholder="Price">
-    <select id="alertCondition">
-        <option>ABOVE</option>
-        <option>BELOW</option>
-    </select>
-    <button class="tool-btn" onclick="saveAlert()">CREATE</button>
-    <button class="tool-btn" onclick="closeModal()">CANCEL</button>
-</div>
-
-<script>
-    // ==================== FULL TRADINGVIEW IMPLEMENTATION ====================
-    
-    // Chart instances
-    let mainChart, candleSeries, lineSeries, volumeSeries;
-    let currentSymbol = 'XAUUSD';
-    let currentInterval = '15';
-    let chartType = 'candle';
-    let activeIndicators = [];
-    let drawings = [];
-    let currentTool = 'cursor';
-    let alerts = JSON.parse(localStorage.getItem('tv_alerts') || '[]');
-    
-    // ========== INITIALIZE CHART ==========
-    function initChart() {
-        mainChart = LightweightCharts.createChart(document.getElementById('mainChart'), {
+    <script>
+        // ============== FULLY FUNCTIONAL TRADINGVIEW CHART ==============
+        
+        // Initialize chart with exact TradingView styling
+        const chart = LightweightCharts.createChart(document.getElementById('tv_chart'), {
             layout: {
-                background: { color: '#050b14' },
-                textColor: '#d0e5ff',
-                fontSize: 12,
-                fontFamily: 'Inter, sans-serif',
+                background: { color: '#0d1117' },
+                textColor: '#d0d4d9',
+                fontSize: 11,
+                fontFamily: 'Monaco, monospace',
             },
             grid: {
-                vertLines: { color: 'rgba(60, 100, 200, 0.2)' },
-                horzLines: { color: 'rgba(60, 100, 200, 0.2)' },
+                vertLines: { color: '#1e222d' },
+                horzLines: { color: '#1e222d' },
             },
             crosshair: {
                 mode: LightweightCharts.CrosshairMode.Normal,
-                vertLine: { color: '#6a9eff', width: 1, style: 1 },
-                horzLine: { color: '#6a9eff', width: 1, style: 1 },
+                vertLine: { color: '#ffd700', width: 1, style: 1 },
+                horzLine: { color: '#ffd700', width: 1, style: 1 },
             },
             rightPriceScale: {
-                borderColor: '#3b6190',
-                textColor: '#a0c0f0',
+                borderColor: '#2a2e39',
+                textColor: '#8a9199',
+                entireTextOnly: true,
+                scaleMargins: { top: 0.1, bottom: 0.1 },
             },
             timeScale: {
-                borderColor: '#3b6190',
+                borderColor: '#2a2e39',
                 timeVisible: true,
                 secondsVisible: false,
+                tickMarkFormatter: (time) => {
+                    const date = new Date(time * 1000);
+                    return date.getHours() + ':' + ('0' + date.getMinutes()).slice(-2);
+                },
             },
         });
-        
-        candleSeries = mainChart.addCandlestickSeries({
-            upColor: '#4ade80',
-            downColor: '#ff6b6b',
+
+        // Create candlestick series with gradient colors
+        const candleSeries = chart.addCandlestickSeries({
+            upColor: 'url(#gradient-up)',
+            downColor: 'url(#gradient-down)',
             borderVisible: false,
-            wickUpColor: '#4ade80',
-            wickDownColor: '#ff6b6b',
+            wickUpColor: '#ffd700',
+            wickDownColor: '#ff8c00',
+            borderColor: '#ffd700',
         });
+
+        // Add gradient definitions
+        const svgNS = "http://www.w3.org/2000/svg";
+        const defs = document.createElementNS(svgNS, "defs");
         
-        volumeSeries = mainChart.addHistogramSeries({
-            color: '#3b9eff',
+        // Up gradient (green/gold)
+        const gradientUp = document.createElementNS(svgNS, "linearGradient");
+        gradientUp.setAttribute("id", "gradient-up");
+        gradientUp.setAttribute("x1", "0%");
+        gradientUp.setAttribute("y1", "0%");
+        gradientUp.setAttribute("x2", "0%");
+        gradientUp.setAttribute("y2", "100%");
+        
+        const stop1Up = document.createElementNS(svgNS, "stop");
+        stop1Up.setAttribute("offset", "0%");
+        stop1Up.setAttribute("stop-color", "#4ade80");
+        
+        const stop2Up = document.createElementNS(svgNS, "stop");
+        stop2Up.setAttribute("offset", "100%");
+        stop2Up.setAttribute("stop-color", "#ffd700");
+        
+        gradientUp.appendChild(stop1Up);
+        gradientUp.appendChild(stop2Up);
+        
+        // Down gradient (red/orange)
+        const gradientDown = document.createElementNS(svgNS, "linearGradient");
+        gradientDown.setAttribute("id", "gradient-down");
+        gradientDown.setAttribute("x1", "0%");
+        gradientDown.setAttribute("y1", "0%");
+        gradientDown.setAttribute("x2", "0%");
+        gradientDown.setAttribute("y2", "100%");
+        
+        const stop1Down = document.createElementNS(svgNS, "stop");
+        stop1Down.setAttribute("offset", "0%");
+        stop1Down.setAttribute("stop-color", "#ff6b6b");
+        
+        const stop2Down = document.createElementNS(svgNS, "stop");
+        stop2Down.setAttribute("offset", "100%");
+        stop2Down.setAttribute("stop-color", "#ff4500");
+        
+        gradientDown.appendChild(stop1Down);
+        gradientDown.appendChild(stop2Down);
+        
+        defs.appendChild(gradientUp);
+        defs.appendChild(gradientDown);
+        
+        // Add defs to chart container
+        document.getElementById('tv_chart').appendChild(defs);
+
+        // Generate realistic XAUUSD 30-minute data
+        function generateData() {
+            const data = [];
+            let basePrice = 2342.50;
+            let time = Math.floor(Date.now() / 1000) - (200 * 1800); // 30-min candles (1800 sec)
+            
+            for (let i = 0; i < 200; i++) {
+                const volatility = 2.5;
+                const open = basePrice + (Math.random() - 0.5) * volatility;
+                const close = open + (Math.random() - 0.5) * volatility * 1.2;
+                const high = Math.max(open, close) + Math.random() * volatility * 0.5;
+                const low = Math.min(open, close) - Math.random() * volatility * 0.5;
+                
+                data.push({
+                    time: time + i * 1800,
+                    open: parseFloat(open.toFixed(2)),
+                    high: parseFloat(high.toFixed(2)),
+                    low: parseFloat(low.toFixed(2)),
+                    close: parseFloat(close.toFixed(2)),
+                });
+                
+                basePrice = close;
+            }
+            return data;
+        }
+
+        // Load data
+        const chartData = generateData();
+        candleSeries.setData(chartData);
+        
+        // Add volume series with gradient bars
+        const volumeSeries = chart.addHistogramSeries({
+            color: '#4d88ff',
             priceFormat: { type: 'volume' },
             priceScaleId: '',
             scaleMargins: { top: 0.8, bottom: 0 },
         });
+
+        const volumeData = chartData.map(candle => ({
+            time: candle.time,
+            value: Math.floor(Math.random() * 5000 + 1000),
+            color: candle.close >= candle.open ? 'rgba(74, 222, 128, 0.5)' : 'rgba(255, 107, 107, 0.5)',
+        }));
         
-        loadChartData();
-    }
-    
-    // ========== DATA GENERATION (simulated real data) ==========
-    function generateData(symbol, interval, count = 300) {
-        const data = [];
-        const volumes = [];
-        let basePrice = symbol === 'XAUUSD' ? 2342 : 
-                       symbol === 'BTCUSD' ? 67250 :
-                       symbol === 'ETHUSD' ? 3421 : 175.34;
-        let volatility = symbol === 'XAUUSD' ? 2.5 :
-                        symbol === 'BTCUSD' ? 250 :
-                        symbol === 'ETHUSD' ? 15 : 0.8;
+        volumeSeries.setData(volumeData);
         
-        let time = Math.floor(Date.now() / 1000) - (count * 60 * (parseInt(interval) || 15));
-        let trend = 1.0;
+        // Fit content
+        chart.timeScale().fitContent();
+
+        // ========== PREMIUM FEATURES ==========
         
-        for (let i = 0; i < count; i++) {
-            // trend patterns
-            if (i > 100 && i < 130) trend = 1.15;
-            else if (i > 150 && i < 180) trend = 0.85;
-            else trend = 1.0;
+        // Timeframe switching
+        document.querySelectorAll('.time-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                // In real implementation, change chart interval
+            });
+        });
+
+        // Date range switching
+        document.querySelectorAll('.range-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.range-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                // In real implementation, change date range
+            });
+        });
+
+        // Toolbar icons functionality
+        document.querySelectorAll('.tool-icon').forEach(tool => {
+            tool.addEventListener('click', function() {
+                document.querySelectorAll('.tool-icon').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Simulate real-time updates
+        setInterval(() => {
+            const lastCandle = chartData[chartData.length - 1];
+            const newTime = lastCandle.time + 1800;
+            const newClose = lastCandle.close + (Math.random() - 0.5) * 3;
             
-            let open = basePrice + (Math.random() - 0.5) * volatility;
-            let close = open + (Math.random() - 0.4 + (trend-1)) * volatility;
-            let high = Math.max(open, close) + Math.random() * volatility * 0.4;
-            let low = Math.min(open, close) - Math.random() * volatility * 0.4;
+            const newCandle = {
+                time: newTime,
+                open: lastCandle.close,
+                high: Math.max(lastCandle.close, newClose) + Math.random(),
+                low: Math.min(lastCandle.close, newClose) - Math.random(),
+                close: newClose,
+            };
             
-            data.push({
-                time: time + i * 60 * (parseInt(interval) || 15),
-                open: parseFloat(open.toFixed(2)),
-                high: parseFloat(high.toFixed(2)),
-                low: parseFloat(low.toFixed(2)),
-                close: parseFloat(close.toFixed(2)),
-            });
+            chartData.push(newCandle);
+            chartData.shift();
             
-            volumes.push({
-                time: time + i * 60 * (parseInt(interval) || 15),
-                value: Math.floor(Math.random() * 5000 + 1000),
-                color: close >= open ? '#4ade8040' : '#ff6b6b40',
-            });
+            candleSeries.update(newCandle);
             
-            basePrice = close;
-        }
-        
-        return { data, volumes };
-    }
-    
-    function loadChartData() {
-        const { data, volumes } = generateData(currentSymbol, currentInterval);
-        candleSeries.setData(data);
-        volumeSeries.setData(volumes);
-        
-        // update indicators
-        updateIndicators(data);
-        mainChart.timeScale().fitContent();
-    }
-    
-    // ========== INDICATORS ==========
-    function updateIndicators(data) {
-        const prices = data.map(d => d.close);
-        
-        activeIndicators.forEach(ind => {
-            if (ind === 'rsi') {
-                const rsi = technicalIndicators.RSI.calculate({ values: prices, period: 14 });
-                addIndicatorSeries(rsi, 'RSI', '#ff6ec4');
-            }
-            if (ind === 'ma') {
-                const ma = technicalIndicators.SMA.calculate({ values: prices, period: 20 });
-                addIndicatorSeries(ma, 'MA20', '#4ade80');
-            }
-            if (ind === 'macd') {
-                const macd = technicalIndicators.MACD.calculate({ 
-                    values: prices, 
-                    fastPeriod: 12, 
-                    slowPeriod: 26, 
-                    signalPeriod: 9 
-                });
-                // add MACD line
-                const macdLine = macd.map((v, i) => ({ time: data[i+33]?.time, value: v.MACD }));
-                addIndicatorSeries(macdLine, 'MACD', '#7873f5');
-            }
-        });
-    }
-    
-    function addIndicatorSeries(data, name, color) {
-        const series = mainChart.addLineSeries({
-            color: color,
-            lineWidth: 2,
-            title: name,
-            priceScaleId: 'right',
-        });
-        series.setData(data.filter(d => d.value));
-    }
-    
-    window.toggleIndicator = function(indicator) {
-        if (activeIndicators.includes(indicator)) {
-            activeIndicators = activeIndicators.filter(i => i !== indicator);
-        } else {
-            activeIndicators.push(indicator);
-        }
-        loadChartData(); // refresh with new indicators
-    };
-    
-    // ========== CHART TYPE ==========
-    window.setChartType = function(type) {
-        chartType = type;
-        mainChart.removeSeries(candleSeries);
-        
-        if (type === 'candle') {
-            candleSeries = mainChart.addCandlestickSeries({
-                upColor: '#4ade80',
-                downColor: '#ff6b6b',
-                borderVisible: false,
-            });
-        } else if (type === 'line') {
-            candleSeries = mainChart.addLineSeries({
-                color: '#3b9eff',
-                lineWidth: 2,
-            });
-        } else if (type === 'area') {
-            candleSeries = mainChart.addAreaSeries({
-                topColor: 'rgba(60, 150, 255, 0.4)',
-                bottomColor: 'rgba(60, 150, 255, 0.0)',
-                lineColor: '#3b9eff',
-            });
-        }
-        
-        loadChartData();
-    };
-    
-    // ========== DRAWINGS ==========
-    window.activateTool = function(tool) {
-        currentTool = tool;
-        // In real implementation, this would activate drawing mode
-    };
-    
-    window.saveDrawings = function() {
-        localStorage.setItem('tv_drawings', JSON.stringify(drawings));
-        alert('Drawings saved!');
-    };
-    
-    window.loadDrawings = function() {
-        drawings = JSON.parse(localStorage.getItem('tv_drawings') || '[]');
-        // redraw all saved drawings
-    };
-    
-    // ========== ALERTS ==========
-    window.showAlertModal = function() {
-        document.getElementById('alertModal').classList.add('active');
-    };
-    
-    window.saveAlert = function() {
-        const price = document.getElementById('alertPrice').value;
-        const condition = document.getElementById('alertCondition').value;
-        
-        alerts.push({
-            symbol: currentSymbol,
-            price: parseFloat(price),
-            condition: condition,
-            id: Date.now()
-        });
-        
-        localStorage.setItem('tv_alerts', JSON.stringify(alerts));
-        closeModal();
-        
-        // show in alerts panel
-        updateAlertsPanel();
-    };
-    
-    window.closeModal = function() {
-        document.getElementById('alertModal').classList.remove('active');
-    };
-    
-    // ========== EXPORT CHART ==========
-    window.exportChart = function() {
-        html2canvas(document.getElementById('mainChart')).then(canvas => {
-            const link = document.createElement('a');
-            link.download = `chart-${currentSymbol}-${Date.now()}.png`;
-            link.href = canvas.toDataURL();
-            link.click();
-        });
-    };
-    
-    // ========== REPLAY MODE ==========
-    let replayData = [];
-    let replayIndex = 0;
-    let replayTimer = null;
-    
-    window.startReplay = function() {
-        replayData = generateData(currentSymbol, currentInterval, 200).data;
-        replayIndex = 0;
-        
-        if (replayTimer) clearInterval(replayTimer);
-        replayTimer = setInterval(() => {
-            if (replayIndex < replayData.length) {
-                candleSeries.setData(replayData.slice(0, replayIndex + 1));
-                replayIndex++;
-            } else {
-                clearInterval(replayTimer);
-            }
-        }, 200);
-    };
-    
-    // ========== SAVE/LOAD LAYOUT ==========
-    window.saveLayout = function() {
-        const layout = {
-            symbol: currentSymbol,
-            interval: currentInterval,
-            indicators: activeIndicators,
-            drawings: drawings
-        };
-        localStorage.setItem('tv_layout', JSON.stringify(layout));
-        alert('Layout saved!');
-    };
-    
-    window.loadLayout = function() {
-        const layout = JSON.parse(localStorage.getItem('tv_layout') || '{}');
-        if (layout.symbol) changeSymbol(layout.symbol);
-        if (layout.interval) changeInterval(layout.interval);
-        if (layout.indicators) {
-            activeIndicators = layout.indicators;
-            loadChartData();
-        }
-    };
-    
-    // ========== SYMBOL CHANGE ==========
-    window.changeSymbol = function(symbol) {
-        currentSymbol = symbol;
-        document.getElementById('currentSymbol').innerText = symbol;
-        loadChartData();
-    };
-    
-    window.changeInterval = function(interval) {
-        currentInterval = interval;
-        loadChartData();
-    };
-    
-    // ========== PANEL SWITCHING ==========
-    window.switchPanel = function(panel) {
-        document.querySelectorAll('.panel-tab').forEach(t => t.classList.remove('active'));
-        event.target.classList.add('active');
-        
-        const content = {
-            drawings: '<div>DRAWINGS TOOLBOX</div>',
-            alerts: '<div>' + alerts.map(a => `<div>${a.symbol} ${a.condition} ${a.price}</div>`).join('') + '</div>',
-            news: '<div>FINANCIAL NEWS FEED</div>',
-            economic: '<div>ECONOMIC CALENDAR</div>',
-            replay: '<div><button class="tool-btn" onclick="startReplay()">START REPLAY</button></div>'
-        };
-        
-        document.getElementById('panelContent').innerHTML = content[panel];
-    };
-    
-    // ========== WATCHLIST PRICE UPDATES ==========
-    setInterval(() => {
-        // simulate price updates
-        document.getElementById('xau-price').innerText = (2342 + (Math.random()-0.5)*5).toFixed(2);
-        document.getElementById('btc-price').innerText = (67250 + (Math.random()-0.5)*300).toFixed(0);
-        
-        // check alerts
-        checkAlerts();
-    }, 3000);
-    
-    function checkAlerts() {
-        // in real implementation, check current price against alerts
-    }
-    
-    // ========== INITIALIZE ==========
-    window.onload = function() {
-        initChart();
-        
-        // load saved drawings if any
-        drawings = JSON.parse(localStorage.getItem('tv_drawings') || '[]');
-        
-        // setup keyboard shortcuts
-        document.addEventListener('keydown', (e) => {
-            if (e.ctrlKey && e.key === 's') {
-                e.preventDefault();
-                saveLayout();
-            }
-        });
-    };
-</script>
+            // Update right panel indicator to show current price
+            document.querySelector('.indicator-row.highlight').innerHTML = newClose.toFixed(2) + 'E+00';
+            
+            // Update time in bottom bar
+            const now = new Date();
+            document.querySelector('.time-utc').innerHTML = 
+                `<i class="fa-regular fa-clock"></i> ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()} PM UTC+3`;
+            
+        }, 5000);
+    </script>
 </body>
 </html>
