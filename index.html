@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XAUUSD · 30 · FOREX.com · Premium Gradient</title>
+    <title>TradingView Clone · Full Working Platform</title>
     <!-- Lightweight Charts -->
     <script src="https://unpkg.com/lightweight-charts@4.1.0/dist/lightweight-charts.standalone.production.js"></script>
     <!-- Font Awesome -->
@@ -13,548 +13,445 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Trebuchet MS', Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', monospace;
         }
-
+        
         body {
-            background-color: #0d1117;
+            background: #131722;
             height: 100vh;
-            width: 100vw;
             overflow: hidden;
         }
-
-        /* Main container - exact TradingView layout */
-        .tradingview {
+        
+        .container {
             display: flex;
             flex-direction: column;
             height: 100vh;
-            width: 100vw;
-            background: #0d1117;
-            color: #d0d4d9;
         }
-
-        /* ========== TOP NAVIGATION ========== */
-        .top-nav {
+        
+        /* Top Header */
+        .header {
+            background: #1e222d;
+            border-bottom: 1px solid #2a2e39;
+            padding: 8px 16px;
             display: flex;
             align-items: center;
-            padding: 4px 8px;
-            background: #131722;
-            border-bottom: 1px solid #2a2e39;
+            gap: 24px;
             height: 48px;
-            gap: 16px;
         }
-
-        .logo-area {
+        
+        .logo {
+            color: #ffd700;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .symbol-picker {
+            background: #2a2e39;
+            padding: 6px 12px;
+            border-radius: 4px;
             display: flex;
             align-items: center;
             gap: 8px;
+            cursor: pointer;
         }
-
-        .logo {
-            background: linear-gradient(135deg, #ffd700, #ff8c00, #ff4500);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 700;
-            font-size: 1.2rem;
+        
+        .symbol-picker:hover {
+            background: #3a3e49;
         }
-
-        .symbol-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: #1e222d;
-            padding: 6px 12px;
-            border-radius: 6px;
-            border-left: 3px solid;
-            border-image: linear-gradient(180deg, #ffd700, #ff8c00) 1;
-        }
-
-        .symbol-name {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: white;
-        }
-
-        .symbol-desc {
-            color: #8a9199;
-            font-size: 0.9rem;
-        }
-
-        .broker {
-            color: #ffd700;
-            background: #2a2e39;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-        }
-
-        /* ========== MAIN CHART AREA ========== */
-        .main-area {
+        
+        /* Main Layout */
+        .main {
             display: flex;
             flex: 1;
             overflow: hidden;
         }
-
-        /* Left sidebar - exactly like screenshot */
+        
+        /* Left Toolbar */
         .left-toolbar {
             width: 48px;
-            background: #131722;
+            background: #1e222d;
             border-right: 1px solid #2a2e39;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
             padding: 8px 0;
-            gap: 16px;
         }
-
-        .tool-icon {
+        
+        .tool-btn {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: #8a9199;
-            font-size: 1.2rem;
             cursor: pointer;
-            padding: 8px;
-            border-radius: 4px;
         }
-
-        .tool-icon:hover {
+        
+        .tool-btn:hover {
+            color: #ffd700;
             background: #2a2e39;
-            color: #ffd700;
         }
-
-        .tool-icon.active {
+        
+        .tool-btn.active {
             color: #ffd700;
-            border-left: 2px solid #ffd700;
+            border-left: 3px solid #ffd700;
         }
-
-        /* Center chart section */
-        .chart-section {
+        
+        /* Chart Area */
+        .chart-area {
             flex: 1;
             display: flex;
             flex-direction: column;
-            background: #0d1117;
+            background: #131722;
         }
-
-        /* Chart toolbar - exactly like screenshot */
-        .chart-toolbar {
+        
+        /* Timeframe Toolbar */
+        .timeframe-bar {
+            height: 40px;
+            background: #1e222d;
+            border-bottom: 1px solid #2a2e39;
             display: flex;
             align-items: center;
-            padding: 4px 12px;
-            background: #131722;
-            border-bottom: 1px solid #2a2e39;
+            padding: 0 16px;
             gap: 16px;
-            height: 40px;
         }
-
-        .timeframe-group {
+        
+        .tf-group {
             display: flex;
-            gap: 2px;
-            background: #1e222d;
+            background: #2a2e39;
             border-radius: 4px;
             padding: 2px;
         }
-
-        .time-btn {
+        
+        .tf-btn {
             padding: 4px 12px;
-            font-size: 0.9rem;
+            font-size: 12px;
             color: #8a9199;
-            background: transparent;
-            border: none;
             cursor: pointer;
             border-radius: 3px;
         }
-
-        .time-btn.active {
-            background: linear-gradient(135deg, #ffd700, #ff8c00);
-            color: #131722;
-            font-weight: 600;
+        
+        .tf-btn:hover {
+            background: #3a3e49;
+            color: white;
         }
-
-        /* CHART CONTAINER - THIS IS WHERE YOUR SCREENSHOT CHART GOES */
-        .chart-container {
+        
+        .tf-btn.active {
+            background: #ffd700;
+            color: #131722;
+            font-weight: bold;
+        }
+        
+        /* Chart Container */
+        .chart-wrapper {
             flex: 1;
             position: relative;
-            background: #0d1117;
-            padding: 10px;
+            padding: 8px;
         }
-
-        #tv_chart {
+        
+        #chart {
             width: 100%;
             height: 100%;
-            background: #0d1117;
         }
-
-        /* Right sidebar - exactly like screenshot with price scale */
+        
+        /* Right Panel */
         .right-panel {
-            width: 220px;
-            background: #131722;
-            border-left: 1px solid #2a2e39;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Price scale - exactly like your screenshot (3.50E+00 down to 0.00E+00) */
-        .price-scale {
-            padding: 16px 8px;
-            font-family: 'Courier New', monospace;
-            border-bottom: 1px solid #2a2e39;
-        }
-
-        .scale-item {
-            display: flex;
-            justify-content: flex-end;
-            padding: 4px 0;
-            font-size: 0.8rem;
-            color: #8a9199;
-            border-bottom: 1px dotted #2a2e39;
-        }
-
-        .scale-item.main {
-            color: #ffd700;
-            font-weight: 600;
-        }
-
-        /* Time axis - exactly like screenshot (09:00/19W, 18, 06:30/AM etc) */
-        .time-axis {
-            display: flex;
-            justify-content: space-around;
-            padding: 8px;
-            background: #131722;
-            border-top: 1px solid #2a2e39;
-            font-size: 0.75rem;
-            color: #8a9199;
-            font-family: monospace;
-        }
-
-        .time-marker {
-            text-align: center;
-        }
-
-        /* Bottom panel with TradingView credit */
-        .bottom-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 4px 16px;
-            background: #131722;
-            border-top: 1px solid #2a2e39;
-            font-size: 0.75rem;
-            color: #5d6b7a;
-            height: 32px;
-        }
-
-        .tradingview-credit {
-            color: #ffd700;
-            font-weight: 600;
-        }
-
-        .time-utc {
-            font-family: monospace;
-        }
-
-        /* Red and Blue bars exactly like screenshot */
-        .indicator-bars {
-            display: flex;
-            gap: 4px;
-            margin: 8px 0;
-        }
-
-        .red-bar {
-            width: 8px;
-            height: 30px;
-            background: linear-gradient(180deg, #ff4d4d, #cc0000);
-            border-radius: 2px;
-        }
-
-        .blue-bar {
-            width: 8px;
-            height: 30px;
-            background: linear-gradient(180deg, #4d88ff, #0033cc);
-            border-radius: 2px;
-        }
-
-        /* Date range selector - exactly like screenshot (1D, 5D, 1M, 3M etc) */
-        .date-range {
-            display: flex;
-            gap: 8px;
-            padding: 8px 16px;
+            width: 250px;
             background: #1e222d;
-            border-radius: 4px;
-        }
-
-        .range-btn {
-            color: #8a9199;
-            font-size: 0.85rem;
-            padding: 2px 8px;
-            cursor: pointer;
-        }
-
-        .range-btn.active {
-            color: #ffd700;
-            background: #2a2e39;
-            border-radius: 3px;
-        }
-
-        /* Right panel indicators (3.50E+00 list) */
-        .indicator-list {
-            flex: 1;
-            padding: 16px 8px;
-            font-family: 'Courier New', monospace;
+            border-left: 1px solid #2a2e39;
+            padding: 16px;
             overflow-y: auto;
         }
-
-        .indicator-row {
+        
+        .price-scale {
+            font-family: 'Courier New', monospace;
+            color: #8a9199;
+            font-size: 12px;
+        }
+        
+        .price-row {
             display: flex;
             justify-content: flex-end;
             padding: 4px 0;
-            font-size: 0.8rem;
-            color: #b4b9c2;
-            border-bottom: 1px solid #2a2e39;
+            border-bottom: 1px dotted #2a2e39;
         }
-
-        .indicator-row.highlight {
+        
+        .price-row.current {
             color: #ffd700;
-            background: rgba(255, 215, 0, 0.1);
+            font-weight: bold;
+        }
+        
+        /* Bottom Status Bar */
+        .status-bar {
+            height: 32px;
+            background: #1e222d;
+            border-top: 1px solid #2a2e39;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            font-size: 12px;
+            color: #8a9199;
+            gap: 24px;
+        }
+        
+        /* Indicators */
+        .indicator {
+            padding: 8px;
+            margin: 8px 0;
+            background: #2a2e39;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .indicator:hover {
+            background: #3a3e49;
         }
     </style>
 </head>
 <body>
-    <div class="tradingview">
-        <!-- TOP NAVIGATION - Exactly as screenshot -->
-        <div class="top-nav">
-            <div class="logo-area">
-                <span class="logo"><i class="fa-brands fa-trade-federation"></i> TRADINGVIEW</span>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="logo">📊 TRADINGVIEW</div>
+            <div class="symbol-picker" id="symbolPicker">
+                <span id="currentSymbol">XAUUSD</span>
+                <span style="color: #ffd700;">▼</span>
             </div>
-            <div class="symbol-info">
-                <span class="symbol-name">XAUUSD</span>
-                <span class="symbol-desc">· 30 · FOREX.com</span>
-                <span class="broker"><i class="fa-regular fa-building"></i> FOREX.com</span>
-            </div>
+            <div style="color: #8a9199; font-size: 14px;">FOREX.com</div>
             <div style="flex:1"></div>
-            <div class="date-range">
-                <span class="range-btn">1D</span>
-                <span class="range-btn">5D</span>
-                <span class="range-btn active">1M</span>
-                <span class="range-btn">3M</span>
-                <span class="range-btn">6M</span>
-                <span class="range-btn">YTD</span>
-                <span class="range-btn">1Y</span>
-                <span class="range-btn">5Y</span>
-                <span class="range-btn">All</span>
+            <div style="display: flex; gap: 16px;">
+                <span><i class="fa-regular fa-bell"></i></span>
+                <span><i class="fa-regular fa-moon"></i></span>
+                <span><i class="fa-regular fa-user"></i></span>
             </div>
         </div>
-
-        <!-- MAIN AREA -->
-        <div class="main-area">
+        
+        <!-- MAIN CONTENT -->
+        <div class="main">
             <!-- LEFT TOOLBAR -->
             <div class="left-toolbar">
-                <div class="tool-icon active"><i class="fa-regular fa-chart-line"></i></div>
-                <div class="tool-icon"><i class="fa-regular fa-pen-to-square"></i></div>
-                <div class="tool-icon"><i class="fa-regular fa-hand"></i></div>
-                <div class="tool-icon"><i class="fa-regular fa-crosshair"></i></div>
-                <div class="tool-icon"><i class="fa-regular fa-circle"></i></div>
-                <div class="tool-icon"><i class="fa-regular fa-square"></i></div>
-                <div class="tool-icon"><i class="fa-regular fa-arrow-right"></i></div>
-                <div class="tool-icon"><i class="fa-regular fa-ruler"></i></div>
-                <div class="tool-icon"><i class="fa-regular fa-font"></i></div>
-                <div class="tool-icon"><i class="fa-regular fa-note-sticky"></i></div>
+                <div class="tool-btn active"><i class="fa-regular fa-chart-line"></i></div>
+                <div class="tool-btn"><i class="fa-regular fa-pen-to-square"></i></div>
+                <div class="tool-btn"><i class="fa-regular fa-hand"></i></div>
+                <div class="tool-btn"><i class="fa-regular fa-crosshair"></i></div>
+                <div class="tool-btn"><i class="fa-regular fa-circle"></i></div>
+                <div class="tool-btn"><i class="fa-regular fa-ruler"></i></div>
+                <div class="tool-btn"><i class="fa-regular fa-font"></i></div>
             </div>
-
-            <!-- CHART SECTION -->
-            <div class="chart-section">
-                <!-- Chart toolbar with timeframe selectors -->
-                <div class="chart-toolbar">
-                    <div class="timeframe-group">
-                        <button class="time-btn">1</button>
-                        <button class="time-btn">5</button>
-                        <button class="time-btn active">30</button>
-                        <button class="time-btn">60</button>
-                        <button class="time-btn">240</button>
-                        <button class="time-btn">1D</button>
+            
+            <!-- CHART AREA -->
+            <div class="chart-area">
+                <!-- TIMEFRAME BAR -->
+                <div class="timeframe-bar">
+                    <div class="tf-group">
+                        <div class="tf-btn" onclick="changeTimeframe('1')">1</div>
+                        <div class="tf-btn" onclick="changeTimeframe('5')">5</div>
+                        <div class="tf-btn active" onclick="changeTimeframe('15')">15</div>
+                        <div class="tf-btn" onclick="changeTimeframe('30')">30</div>
+                        <div class="tf-btn" onclick="changeTimeframe('60')">60</div>
+                        <div class="tf-btn" onclick="changeTimeframe('240')">240</div>
+                        <div class="tf-btn" onclick="changeTimeframe('D')">D</div>
+                        <div class="tf-btn" onclick="changeTimeframe('W')">W</div>
+                        <div class="tf-btn" onclick="changeTimeframe('M')">M</div>
                     </div>
-                    <div style="display: flex; gap: 8px; align-items: center;">
-                        <span class="red-bar"></span>
-                        <span class="blue-bar"></span>
-                        <span style="color:#8a9199;">Indicators</span>
+                    
+                    <div class="tf-group">
+                        <div class="tf-btn" onclick="setChartType('candle')">Candles</div>
+                        <div class="tf-btn" onclick="setChartType('line')">Line</div>
+                        <div class="tf-btn" onclick="setChartType('bar')">Bar</div>
+                        <div class="tf-btn" onclick="setChartType('area')">Area</div>
                     </div>
                 </div>
-
-                <!-- MAIN CHART - THIS IS YOUR SCREENSHOT AREA -->
-                <div class="chart-container">
-                    <div id="tv_chart"></div>
-                </div>
-
-                <!-- TIME AXIS - Exactly as screenshot (09:00/19W, 18, 06:30/AM, etc) -->
-                <div class="time-axis">
-                    <span class="time-marker">09:00/19W</span>
-                    <span class="time-marker">18</span>
-                    <span class="time-marker">06:30/AM</span>
-                    <span class="time-marker">09:30/AM</span>
-                    <span class="time-marker">12:30/PM</span>
-                    <span class="time-marker">03:00/PM</span>
-                    <span class="time-marker">06:00/PM</span>
-                    <span class="time-marker">09:00/PM</span>
-                    <span class="time-marker">12:00/PM</span>
+                
+                <!-- CHART -->
+                <div class="chart-wrapper">
+                    <div id="chart"></div>
                 </div>
             </div>
-
-            <!-- RIGHT PANEL - Price scale and indicators exactly like screenshot -->
+            
+            <!-- RIGHT PANEL -->
             <div class="right-panel">
-                <!-- Price scale from 3.50E+00 down to 0.00E+00 -->
-                <div class="price-scale">
-                    <div class="scale-item">3.50E+00</div>
-                    <div class="scale-item">3.25E+00</div>
-                    <div class="scale-item">3.00E+00</div>
-                    <div class="scale-item">2.75E+00</div>
-                    <div class="scale-item">2.50E+00</div>
-                    <div class="scale-item main">2.25E+00</div>
-                    <div class="scale-item">2.00E+00</div>
-                    <div class="scale-item">1.75E+00</div>
-                    <div class="scale-item">1.50E+00</div>
-                    <div class="scale-item">1.25E+00</div>
-                    <div class="scale-item">1.00E+00</div>
-                    <div class="scale-item">0.75E+00</div>
-                    <div class="scale-item">0.50E+00</div>
-                    <div class="scale-item">0.25E+00</div>
-                    <div class="scale-item">0.00E+00</div>
+                <h4 style="color: white; margin-bottom: 16px;">INSTRUMENTS</h4>
+                
+                <!-- Watchlist -->
+                <div class="indicator" onclick="changeSymbol('XAUUSD')">
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>XAUUSD</span>
+                        <span style="color: #4ade80;" id="xauPrice">2,342.50</span>
+                    </div>
                 </div>
-
-                <!-- Right side indicator list (exact match) -->
-                <div class="indicator-list">
-                    <div class="indicator-row">3.50E+00</div>
-                    <div class="indicator-row">3.25E+00</div>
-                    <div class="indicator-row">3.00E+00</div>
-                    <div class="indicator-row">2.75E+00</div>
-                    <div class="indicator-row">2.50E+00</div>
-                    <div class="indicator-row highlight">2.25E+00</div>
-                    <div class="indicator-row">2.00E+00</div>
-                    <div class="indicator-row">1.75E+00</div>
-                    <div class="indicator-row">1.50E+00</div>
-                    <div class="indicator-row">1.25E+00</div>
-                    <div class="indicator-row">1.00E+00</div>
-                    <div class="indicator-row">0.75E+00</div>
-                    <div class="indicator-row">0.50E+00</div>
-                    <div class="indicator-row">0.25E+00</div>
-                    <div class="indicator-row">0.00E+00</div>
+                
+                <div class="indicator" onclick="changeSymbol('BTCUSD')">
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>BTCUSD</span>
+                        <span style="color: #4ade80;" id="btcPrice">67,250.00</span>
+                    </div>
+                </div>
+                
+                <div class="indicator" onclick="changeSymbol('ETHUSD')">
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>ETHUSD</span>
+                        <span style="color: #ff6b6b;">3,421.00</span>
+                    </div>
+                </div>
+                
+                <div class="indicator" onclick="changeSymbol('AAPL')">
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>AAPL</span>
+                        <span style="color: #4ade80;">175.34</span>
+                    </div>
+                </div>
+                
+                <!-- Price Scale -->
+                <h4 style="color: white; margin: 24px 0 16px;">PRICE SCALE</h4>
+                <div class="price-scale" id="priceScale">
+                    <!-- Will be populated by JavaScript -->
                 </div>
             </div>
         </div>
-
-        <!-- BOTTOM BAR - Exactly as screenshot with TradingView credit and time -->
-        <div class="bottom-bar">
-            <span class="tradingview-credit"><i class="fa-brands fa-trade-federation"></i> TradingView</span>
-            <span class="time-utc"><i class="fa-regular fa-clock"></i> 08:46:30 PM UTC+3</span>
+        
+        <!-- STATUS BAR -->
+        <div class="status-bar">
+            <span><i class="fa-regular fa-clock"></i> <span id="liveTime">2025-03-18 14:30:45</span></span>
+            <span><i class="fa-regular fa-chart-line"></i> 30m · Real-time</span>
+            <span><i class="fa-regular fa-database"></i> 2342.50 / 2343.20</span>
+            <span style="color: #ffd700;">⚡ Premium</span>
         </div>
     </div>
 
     <script>
-        // ============== FULLY FUNCTIONAL TRADINGVIEW CHART ==============
+        // ========== TRADINGVIEW FULL IMPLEMENTATION ==========
         
-        // Initialize chart with exact TradingView styling
-        const chart = LightweightCharts.createChart(document.getElementById('tv_chart'), {
-            layout: {
-                background: { color: '#0d1117' },
-                textColor: '#d0d4d9',
-                fontSize: 11,
-                fontFamily: 'Monaco, monospace',
-            },
-            grid: {
-                vertLines: { color: '#1e222d' },
-                horzLines: { color: '#1e222d' },
-            },
-            crosshair: {
-                mode: LightweightCharts.CrosshairMode.Normal,
-                vertLine: { color: '#ffd700', width: 1, style: 1 },
-                horzLine: { color: '#ffd700', width: 1, style: 1 },
-            },
-            rightPriceScale: {
-                borderColor: '#2a2e39',
-                textColor: '#8a9199',
-                entireTextOnly: true,
-                scaleMargins: { top: 0.1, bottom: 0.1 },
-            },
-            timeScale: {
-                borderColor: '#2a2e39',
-                timeVisible: true,
-                secondsVisible: false,
-                tickMarkFormatter: (time) => {
-                    const date = new Date(time * 1000);
-                    return date.getHours() + ':' + ('0' + date.getMinutes()).slice(-2);
+        // Chart variables
+        let chart, mainSeries, volumeSeries;
+        let currentSymbol = 'XAUUSD';
+        let currentTimeframe = '15';
+        let chartType = 'candle';
+        let chartData = [];
+        
+        // Initialize chart
+        function initChart() {
+            chart = LightweightCharts.createChart(document.getElementById('chart'), {
+                layout: {
+                    background: { color: '#131722' },
+                    textColor: '#d0d4d9',
+                    fontSize: 11,
+                    fontFamily: 'Monaco, monospace',
                 },
-            },
-        });
-
-        // Create candlestick series with gradient colors
-        const candleSeries = chart.addCandlestickSeries({
-            upColor: 'url(#gradient-up)',
-            downColor: 'url(#gradient-down)',
-            borderVisible: false,
-            wickUpColor: '#ffd700',
-            wickDownColor: '#ff8c00',
-            borderColor: '#ffd700',
-        });
-
-        // Add gradient definitions
-        const svgNS = "http://www.w3.org/2000/svg";
-        const defs = document.createElementNS(svgNS, "defs");
-        
-        // Up gradient (green/gold)
-        const gradientUp = document.createElementNS(svgNS, "linearGradient");
-        gradientUp.setAttribute("id", "gradient-up");
-        gradientUp.setAttribute("x1", "0%");
-        gradientUp.setAttribute("y1", "0%");
-        gradientUp.setAttribute("x2", "0%");
-        gradientUp.setAttribute("y2", "100%");
-        
-        const stop1Up = document.createElementNS(svgNS, "stop");
-        stop1Up.setAttribute("offset", "0%");
-        stop1Up.setAttribute("stop-color", "#4ade80");
-        
-        const stop2Up = document.createElementNS(svgNS, "stop");
-        stop2Up.setAttribute("offset", "100%");
-        stop2Up.setAttribute("stop-color", "#ffd700");
-        
-        gradientUp.appendChild(stop1Up);
-        gradientUp.appendChild(stop2Up);
-        
-        // Down gradient (red/orange)
-        const gradientDown = document.createElementNS(svgNS, "linearGradient");
-        gradientDown.setAttribute("id", "gradient-down");
-        gradientDown.setAttribute("x1", "0%");
-        gradientDown.setAttribute("y1", "0%");
-        gradientDown.setAttribute("x2", "0%");
-        gradientDown.setAttribute("y2", "100%");
-        
-        const stop1Down = document.createElementNS(svgNS, "stop");
-        stop1Down.setAttribute("offset", "0%");
-        stop1Down.setAttribute("stop-color", "#ff6b6b");
-        
-        const stop2Down = document.createElementNS(svgNS, "stop");
-        stop2Down.setAttribute("offset", "100%");
-        stop2Down.setAttribute("stop-color", "#ff4500");
-        
-        gradientDown.appendChild(stop1Down);
-        gradientDown.appendChild(stop2Down);
-        
-        defs.appendChild(gradientUp);
-        defs.appendChild(gradientDown);
-        
-        // Add defs to chart container
-        document.getElementById('tv_chart').appendChild(defs);
-
-        // Generate realistic XAUUSD 30-minute data
-        function generateData() {
-            const data = [];
-            let basePrice = 2342.50;
-            let time = Math.floor(Date.now() / 1000) - (200 * 1800); // 30-min candles (1800 sec)
+                grid: {
+                    vertLines: { color: '#1e222d' },
+                    horzLines: { color: '#1e222d' },
+                },
+                crosshair: {
+                    mode: LightweightCharts.CrosshairMode.Normal,
+                    vertLine: { color: '#ffd700', width: 1, style: 1 },
+                    horzLine: { color: '#ffd700', width: 1, style: 1 },
+                },
+                rightPriceScale: {
+                    borderColor: '#2a2e39',
+                    textColor: '#8a9199',
+                    scaleMargins: { top: 0.1, bottom: 0.1 },
+                },
+                timeScale: {
+                    borderColor: '#2a2e39',
+                    timeVisible: true,
+                    secondsVisible: false,
+                },
+            });
             
-            for (let i = 0; i < 200; i++) {
-                const volatility = 2.5;
-                const open = basePrice + (Math.random() - 0.5) * volatility;
-                const close = open + (Math.random() - 0.5) * volatility * 1.2;
-                const high = Math.max(open, close) + Math.random() * volatility * 0.5;
-                const low = Math.min(open, close) - Math.random() * volatility * 0.5;
+            // Create main series based on chart type
+            createMainSeries();
+            
+            // Add volume series
+            volumeSeries = chart.addHistogramSeries({
+                color: '#4d88ff',
+                priceFormat: { type: 'volume' },
+                priceScaleId: '',
+                scaleMargins: { top: 0.8, bottom: 0 },
+            });
+            
+            // Load initial data
+            loadData();
+        }
+        
+        // Create main series based on chart type
+        function createMainSeries() {
+            if (mainSeries) {
+                chart.removeSeries(mainSeries);
+            }
+            
+            switch(chartType) {
+                case 'candle':
+                    mainSeries = chart.addCandlestickSeries({
+                        upColor: '#4ade80',
+                        downColor: '#ff6b6b',
+                        borderVisible: false,
+                        wickUpColor: '#4ade80',
+                        wickDownColor: '#ff6b6b',
+                        borderColor: '#ffd700',
+                    });
+                    break;
+                case 'line':
+                    mainSeries = chart.addLineSeries({
+                        color: '#ffd700',
+                        lineWidth: 2,
+                    });
+                    break;
+                case 'bar':
+                    mainSeries = chart.addBarSeries({
+                        upColor: '#4ade80',
+                        downColor: '#ff6b6b',
+                    });
+                    break;
+                case 'area':
+                    mainSeries = chart.addAreaSeries({
+                        topColor: 'rgba(255, 215, 0, 0.3)',
+                        bottomColor: 'rgba(255, 215, 0, 0.0)',
+                        lineColor: '#ffd700',
+                    });
+                    break;
+            }
+        }
+        
+        // Generate realistic data
+        function generateData(symbol, timeframe, count = 300) {
+            const data = [];
+            let basePrice = symbol === 'XAUUSD' ? 2342.50 :
+                           symbol === 'BTCUSD' ? 67250 :
+                           symbol === 'ETHUSD' ? 3421 : 175.34;
+            
+            let volatility = symbol === 'XAUUSD' ? 2.5 :
+                            symbol === 'BTCUSD' ? 250 :
+                            symbol === 'ETHUSD' ? 15 : 0.8;
+            
+            // Convert timeframe to seconds
+            let tfSeconds = 60;
+            if (timeframe === '1') tfSeconds = 60;
+            else if (timeframe === '5') tfSeconds = 300;
+            else if (timeframe === '15') tfSeconds = 900;
+            else if (timeframe === '30') tfSeconds = 1800;
+            else if (timeframe === '60') tfSeconds = 3600;
+            else if (timeframe === '240') tfSeconds = 14400;
+            else if (timeframe === 'D') tfSeconds = 86400;
+            else if (timeframe === 'W') tfSeconds = 604800;
+            else tfSeconds = 900;
+            
+            let time = Math.floor(Date.now() / 1000) - (count * tfSeconds);
+            
+            for (let i = 0; i < count; i++) {
+                // Create realistic candlestick patterns
+                let trend = 1.0;
+                if (i > 100 && i < 130) trend = 1.15; // Uptrend
+                else if (i > 150 && i < 180) trend = 0.85; // Downtrend
+                
+                let open = basePrice + (Math.random() - 0.5) * volatility;
+                let close = open + (Math.random() - 0.4 + (trend-1)) * volatility;
+                let high = Math.max(open, close) + Math.random() * volatility * 0.5;
+                let low = Math.min(open, close) - Math.random() * volatility * 0.5;
+                
+                // Ensure realistic values
+                high = Math.max(high, open, close) * 1.001;
+                low = Math.min(low, open, close) * 0.999;
                 
                 data.push({
-                    time: time + i * 1800,
+                    time: time + i * tfSeconds,
                     open: parseFloat(open.toFixed(2)),
                     high: parseFloat(high.toFixed(2)),
                     low: parseFloat(low.toFixed(2)),
@@ -563,65 +460,107 @@
                 
                 basePrice = close;
             }
+            
             return data;
         }
-
-        // Load data
-        const chartData = generateData();
-        candleSeries.setData(chartData);
         
-        // Add volume series with gradient bars
-        const volumeSeries = chart.addHistogramSeries({
-            color: '#4d88ff',
-            priceFormat: { type: 'volume' },
-            priceScaleId: '',
-            scaleMargins: { top: 0.8, bottom: 0 },
-        });
-
-        const volumeData = chartData.map(candle => ({
-            time: candle.time,
-            value: Math.floor(Math.random() * 5000 + 1000),
-            color: candle.close >= candle.open ? 'rgba(74, 222, 128, 0.5)' : 'rgba(255, 107, 107, 0.5)',
-        }));
+        // Load data and update chart
+        function loadData() {
+            chartData = generateData(currentSymbol, currentTimeframe);
+            
+            if (chartType === 'candle' || chartType === 'bar') {
+                mainSeries.setData(chartData);
+            } else if (chartType === 'line') {
+                const lineData = chartData.map(d => ({ time: d.time, value: d.close }));
+                mainSeries.setData(lineData);
+            } else if (chartType === 'area') {
+                const areaData = chartData.map(d => ({ time: d.time, value: d.close }));
+                mainSeries.setData(areaData);
+            }
+            
+            // Volume data
+            const volumeData = chartData.map(d => ({
+                time: d.time,
+                value: Math.floor(Math.random() * 5000 + 1000),
+                color: d.close >= d.open ? 'rgba(74, 222, 128, 0.5)' : 'rgba(255, 107, 107, 0.5)',
+            }));
+            
+            volumeSeries.setData(volumeData);
+            
+            // Update price scale
+            updatePriceScale();
+            
+            // Fit chart to screen
+            chart.timeScale().fitContent();
+        }
         
-        volumeSeries.setData(volumeData);
-        
-        // Fit content
-        chart.timeScale().fitContent();
-
-        // ========== PREMIUM FEATURES ==========
-        
-        // Timeframe switching
-        document.querySelectorAll('.time-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                // In real implementation, change chart interval
-            });
-        });
-
-        // Date range switching
-        document.querySelectorAll('.range-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.range-btn').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                // In real implementation, change date range
-            });
-        });
-
-        // Toolbar icons functionality
-        document.querySelectorAll('.tool-icon').forEach(tool => {
-            tool.addEventListener('click', function() {
-                document.querySelectorAll('.tool-icon').forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
-
-        // Simulate real-time updates
-        setInterval(() => {
+        // Update price scale on right panel
+        function updatePriceScale() {
+            if (!chartData.length) return;
+            
             const lastCandle = chartData[chartData.length - 1];
-            const newTime = lastCandle.time + 1800;
-            const newClose = lastCandle.close + (Math.random() - 0.5) * 3;
+            const high = Math.max(...chartData.slice(-20).map(d => d.high));
+            const low = Math.min(...chartData.slice(-20).map(d => d.low));
+            const step = (high - low) / 14;
+            
+            let html = '';
+            for (let i = 14; i >= 0; i--) {
+                const price = (low + i * step).toFixed(2);
+                const isCurrent = Math.abs(parseFloat(price) - lastCandle.close) < step/2;
+                html += `<div class="price-row ${isCurrent ? 'current' : ''}">${price}</div>`;
+            }
+            
+            document.getElementById('priceScale').innerHTML = html;
+        }
+        
+        // Change timeframe
+        window.changeTimeframe = function(tf) {
+            currentTimeframe = tf;
+            
+            // Update active button
+            document.querySelectorAll('.tf-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Reload data
+            loadData();
+        };
+        
+        // Change chart type
+        window.setChartType = function(type) {
+            chartType = type;
+            createMainSeries();
+            loadData();
+        };
+        
+        // Change symbol
+        window.changeSymbol = function(symbol) {
+            currentSymbol = symbol;
+            document.getElementById('currentSymbol').innerText = symbol;
+            loadData();
+            
+            // Update active state in watchlist
+            document.querySelectorAll('.indicator').forEach(ind => ind.style.background = '#2a2e39');
+            event.currentTarget.style.background = '#3a3e49';
+        };
+        
+        // Real-time updates
+        function addRealTimeCandle() {
+            if (!chartData.length) return;
+            
+            const lastCandle = chartData[chartData.length - 1];
+            
+            // Calculate next candle time based on timeframe
+            let tfSeconds = 900; // default 15min
+            if (currentTimeframe === '1') tfSeconds = 60;
+            else if (currentTimeframe === '5') tfSeconds = 300;
+            else if (currentTimeframe === '15') tfSeconds = 900;
+            else if (currentTimeframe === '30') tfSeconds = 1800;
+            else if (currentTimeframe === '60') tfSeconds = 3600;
+            else if (currentTimeframe === '240') tfSeconds = 14400;
+            
+            const newTime = lastCandle.time + tfSeconds;
+            const newClose = lastCandle.close + (Math.random() - 0.5) * 
+                            (currentSymbol === 'XAUUSD' ? 2.5 : 250);
             
             const newCandle = {
                 time: newTime,
@@ -631,20 +570,57 @@
                 close: newClose,
             };
             
+            // Add new candle
             chartData.push(newCandle);
-            chartData.shift();
+            chartData.shift(); // Remove oldest to keep consistent
             
-            candleSeries.update(newCandle);
+            // Update series based on chart type
+            if (chartType === 'candle' || chartType === 'bar') {
+                mainSeries.update(newCandle);
+            } else {
+                mainSeries.update({ time: newTime, value: newClose });
+            }
             
-            // Update right panel indicator to show current price
-            document.querySelector('.indicator-row.highlight').innerHTML = newClose.toFixed(2) + 'E+00';
+            // Update volume
+            volumeSeries.update({
+                time: newTime,
+                value: Math.floor(Math.random() * 5000 + 1000),
+                color: newClose >= newCandle.open ? 'rgba(74, 222, 128, 0.5)' : 'rgba(255, 107, 107, 0.5)',
+            });
             
-            // Update time in bottom bar
+            // Update price scale
+            updatePriceScale();
+            
+            // Update watchlist prices
+            document.getElementById('xauPrice').innerText = 
+                (2342 + (Math.random()-0.5)*5).toFixed(2);
+            document.getElementById('btcPrice').innerText = 
+                (67250 + (Math.random()-0.5)*300).toFixed(0);
+            
+            // Update time in status bar
             const now = new Date();
-            document.querySelector('.time-utc').innerHTML = 
-                `<i class="fa-regular fa-clock"></i> ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()} PM UTC+3`;
+            document.getElementById('liveTime').innerText = 
+                now.toISOString().slice(0,10) + ' ' + 
+                now.getHours().toString().padStart(2,'0') + ':' +
+                now.getMinutes().toString().padStart(2,'0') + ':' +
+                now.getSeconds().toString().padStart(2,'0');
+        }
+        
+        // Initialize everything
+        window.onload = function() {
+            initChart();
             
-        }, 5000);
+            // Real-time updates every 3 seconds
+            setInterval(addRealTimeCandle, 3000);
+            
+            // Symbol picker functionality
+            document.getElementById('symbolPicker').addEventListener('click', function() {
+                const symbols = ['XAUUSD', 'BTCUSD', 'ETHUSD', 'AAPL', 'GOOGL', 'MSFT'];
+                const current = document.getElementById('currentSymbol').innerText;
+                let next = symbols[(symbols.indexOf(current) + 1) % symbols.length];
+                changeSymbol(next);
+            });
+        };
     </script>
 </body>
 </html>
